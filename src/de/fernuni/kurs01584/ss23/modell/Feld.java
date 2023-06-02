@@ -12,7 +12,7 @@ public class Feld {
 	 * @param punkte
 	 * @param verwendbarkeit
 	 */
-	public Feld(char zeichen, int zeile, int spalte, int punkte, int verwendbarkeit) {
+	public Feld(char zeichen, int zeile, int spalte, int punkte, int verwendbarkeit) throws IllegalArgumentException {
 		if (zeile < 0 || spalte < 0) {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Feld' duerfen die Attribute 'zeile' und 'spalte' keine negativen Werte annehmen.");

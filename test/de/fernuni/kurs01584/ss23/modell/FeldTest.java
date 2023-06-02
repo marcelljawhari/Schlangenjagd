@@ -2,23 +2,7 @@ package de.fernuni.kurs01584.ss23.modell;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.Random;
-import java.util.stream.IntStream;
-
-import org.junit.jupiter.api.AfterAll;
-import org.junit.jupiter.api.AfterEach;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.DisplayNameGeneration;
-import org.junit.jupiter.api.DisplayNameGenerator;
-import org.junit.jupiter.api.Nested;
-import org.junit.jupiter.api.RepeatedTest;
-import org.junit.jupiter.api.RepetitionInfo;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
-import org.junit.jupiter.params.provider.ValueSource;
 
 
 class FeldTest {
@@ -26,6 +10,14 @@ class FeldTest {
 	@Test
 	void testeGetZeichenA() {
 		char zeichen = 'a';
+		Feld feld = new Feld(zeichen, 0, 0, 0, 0);
+		assertEquals(feld.getZeichen(), zeichen, () -> "Der Zeilenwert '" + feld.getZeichen() 
+				+ "' entspricht nicht dem vorgegebenen Wert '" + zeichen + "'.");
+	}
+	
+	@Test
+	void testeGetZeichenEmoji() {
+		char zeichen = '⛹';
 		Feld feld = new Feld(zeichen, 0, 0, 0, 0);
 		assertEquals(feld.getZeichen(), zeichen, () -> "Der Zeilenwert '" + feld.getZeichen() 
 				+ "' entspricht nicht dem vorgegebenen Wert '" + zeichen + "'.");

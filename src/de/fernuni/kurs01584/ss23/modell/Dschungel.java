@@ -3,18 +3,107 @@ package de.fernuni.kurs01584.ss23.modell;
 public class Dschungel {
 	private int zeilen;
 	private int spalten;
+	private String zeichenmenge;
+	private Feld[][] felder;
 	
-	// TODO: Attribute
+	/***
+	 * Erzeugt eine Instanz der Klasse 'Dschungel' mit den angegebenen Parametern
+	 * @param zeichenmenge
+	 * @param zeilen
+	 * @param spalten
+	 */
+	public Dschungel(String zeichenmenge, int zeilen, int spalten) throws IllegalArgumentException {
+		if(zeilen <= 0 || spalten <= 0) {
+			throw new IllegalArgumentException(
+					"Fuer die Klasse 'Dschungel' duerfen die Attribute 'zeilen' und 'spalten' keine Werte kleiner oder gleich 0 annehmen.");
+		}
+		this.zeichenmenge = zeichenmenge;
+		this.zeilen = zeilen;
+		this.spalten = spalten;
+		felder = new Feld[zeilen][spalten];
+	}
 	
-	// TODO: Konstruktoren
-
+	/***
+	 * Gibt die Zeilen, die der Dschungel umfässt zurück
+	 * @return Zeilen des Dschungels
+	 */
 	public int getZeilen() {
 		return zeilen;
 	}
 
+	/***
+	 * Gibt die Spalten, die der Dschungel umfässt zurück
+	 * @return Spalten des Dschungels
+	 */
 	public int getSpalten() {
 		return spalten;
 	}
 	
-	// TODO: Methoden
+	/***
+	 * Gibt die Zeichenmenge, welche der Dschungel zulässt zurück
+	 * @return Zeichenmenge des Dschungels
+	 */
+	public String getZeichenmenge() {
+		return zeichenmenge;
+	}
+	
+	/***
+	 * Gibt alle Felder des Dschungels als zweidimensionales Array zurück
+	 * @return Felder des Dschungels
+	 */
+	public Feld[][] getFelder() {
+		return felder;
+	}
+	
+	/***
+	 * Gibt das Feld an der angegebenen Position im Dschungel zurück
+	 * @param zeile
+	 * @param spalte
+	 * @return Feld an angegebener Position
+	 */
+	public Feld getFeld(int zeile, int spalte) {
+		return felder[zeile][spalte];
+	}
+	
+	/***
+	 * Setzt das Feld an der angegebenen Position mit den entsprechenden Parametern in den Dschungel
+	 * @param zeichen
+	 * @param zeile
+	 * @param spalte
+	 * @param punkte
+	 * @param verwendbarkeit
+	 */
+	public void setFeld(char zeichen, int zeile, int spalte, int punkte, int verwendbarkeit) throws IllegalArgumentException {
+		try {
+			felder[zeile][spalte] = new Feld(zeichen, zeile, spalte, punkte, verwendbarkeit);
+		} catch (Exception e) {
+			throw e;
+		}
+		
+	}
+	
+	/***
+	 * Setzt das Feld an der angegebenen Position mit den entsprechenden Parametern und den
+	 * Standardwerten 1 für Punkte und Verwendbarkeit in den Dschungel
+	 * @param zeichen
+	 * @param zeile
+	 * @param spalte
+	 */
+	public void setFeld(char zeichen, int zeile, int spalte) throws IllegalArgumentException {
+		try {
+			setFeld(zeichen, zeile, spalte, 1, 1);
+		} catch (Exception e) {
+			throw e;
+		}
+	}
+	
+	/***
+	 * Setzt ein bereits vordefiniertes Feld an die angegebene Position im Dschungel
+	 * @param feld
+	 * @param zeile
+	 * @param spalte
+	 */
+	public void setFeld(Feld feld) {
+		felder[feld.getZeile()][feld.getSpalte()] = feld;
+	}
 }
