@@ -1,9 +1,14 @@
 package de.fernuni.kurs01584.ss23.modell;
 
+import java.util.List;
+
 public class Schlange {
-	// TODO: Attribute
+	Schlangenart schlangenart;
+	List <Schlangenglied> schlangenglieder;
 	
-	// TODO: Konstruktoren
+	public Schlange(Schlangenart schlangenart) {
+		this.schlangenart = schlangenart;
+	}
 	
 	// TODO: Methoden
 }
