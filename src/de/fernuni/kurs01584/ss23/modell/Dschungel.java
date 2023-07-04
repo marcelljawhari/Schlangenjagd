@@ -66,6 +66,22 @@ public class Dschungel {
 	}
 	
 	/***
+	 * Gibt das Feld mit der gegebenen ID zurück
+	 * @param id
+	 * @return Feld mit gegebener ID
+	 */
+	public Feld getFeldById(String id) {
+		for (Feld[] zeile : felder) {
+			for (Feld feld : zeile) {
+				if (feld.getId().equals(id)) {
+					return feld;
+				}
+			}
+		}
+		return null;
+	}
+	
+	/***
 	 * Setzt das Feld an der angegebenen Position mit den entsprechenden Parametern in den Dschungel
 	 * @param id
 	 * @param zeichen

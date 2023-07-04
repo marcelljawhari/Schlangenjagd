@@ -2,10 +2,13 @@ package de.fernuni.kurs01584.ss23.dateiverarbeitung;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import java.util.List;
+
 import org.junit.jupiter.api.Test;
 
 import de.fernuni.kurs01584.ss23.modell.Dschungel;
 import de.fernuni.kurs01584.ss23.modell.Feld;
+import de.fernuni.kurs01584.ss23.modell.Schlange;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 
 class XMLParserTest {
@@ -64,6 +67,22 @@ class XMLParserTest {
 					}
 				}
 			}
+		} catch (Exception e) {
+			fail("Unerwartete Exception " + e + " wurde ausgeloest.");
+		}
+	}
+
+	@Test
+	void testeGetLoesungSchlangenAnzahl() {
+		String file = "./res/sj_p2_loesung.xml";
+		try {
+			DateiLeser leser = new DateiLeser(file);
+			XMLParser parser = new XMLParser(leser.getDocument());
+			SchlangenjagdModell schlangenjagdModell = parser.getSchlangenjagdModell();
+			List <Schlange> schlangen = schlangenjagdModell.getSchlangen();
+			int schlangenAnzahl = 6;
+			assertEquals(schlangenAnzahl, schlangen.size(), "Es wurden " + schlangen.size() + " statt "
+			+ schlangenAnzahl + " Schlangen gefunden.");
 		} catch (Exception e) {
 			fail("Unerwartete Exception " + e + " wurde ausgeloest.");
 		}

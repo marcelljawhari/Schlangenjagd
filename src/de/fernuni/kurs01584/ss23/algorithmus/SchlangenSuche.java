@@ -1,7 +1,8 @@
 package de.fernuni.kurs01584.ss23.algorithmus;
 
-//import de.fernuni.kurs01584.ss23.modell.*;
+import de.fernuni.kurs01584.ss23.modell.*;
 
 public class SchlangenSuche {
-
+	private SchlangenjagdModell schlangenjagdModell;
+	
 }

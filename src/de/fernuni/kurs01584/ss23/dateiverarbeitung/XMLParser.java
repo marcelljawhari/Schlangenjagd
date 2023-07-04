@@ -1,12 +1,15 @@
 package de.fernuni.kurs01584.ss23.dateiverarbeitung;
 
 import java.util.List;
+import java.util.ArrayList;
 
 import org.jdom2.Document;
 
 import org.jdom2.Element;
 
 import de.fernuni.kurs01584.ss23.modell.Dschungel;
+import de.fernuni.kurs01584.ss23.modell.Feld;
+import de.fernuni.kurs01584.ss23.modell.Schlange;
 import de.fernuni.kurs01584.ss23.modell.Schlangenart;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 import de.fernuni.kurs01584.ss23.modell.Zeiteinheit;
@@ -17,21 +20,41 @@ public class XMLParser {
 	
 	public XMLParser(Document document) {
 		this.document = document;
-		long zeitVorgabe = parseZeitVorgabe();
+		long vorgabeZeit = parseVorgabeZeit();
 		Dschungel dschungel = parseDschungel();
 		Schlangenart[] schlangenarten = parseSchlangenarten();
-		schlangenjagdModell = new SchlangenjagdModell(dschungel, schlangenarten, zeitVorgabe);
+		
+		// Wenn die RootNode mehr als 3 Kinder hat handelt es sich um eine Loesung
+		if (document.getRootElement().getChildren().size() > 3) {
+			long abgabeZeit = parseAbgabeZeit();
+			List<Schlange> schlangen = parseSchlangen(schlangenarten, dschungel);
+			schlangenjagdModell = new SchlangenjagdModell(dschungel, schlangenarten, schlangen, vorgabeZeit, abgabeZeit);
+		} else {
+			schlangenjagdModell = new SchlangenjagdModell(dschungel, schlangenarten, vorgabeZeit);
+		}
+		
 	}
 	
-	private long parseZeitVorgabe() {
+	private long parseVorgabeZeit() {
 		// Parse Zeit und Multiplicator (d, h, m, s, ms) aus XML
 		Element zeitNode = document.getRootElement().getChild("Zeit");
 		long multiplicator = Zeiteinheit.valueOf(zeitNode.getAttributeValue("einheit")).getMultiplicator();
 		double zeitWert = Double.parseDouble(zeitNode.getChildText("Vorgabe"));
 		// Berechne daraus die Zeit Vorgabe in ms
-		long zeitVorgabe = (long)(zeitWert * multiplicator);
+		long vorgabeZeit = (long)(zeitWert * multiplicator);
 		
-		return zeitVorgabe;
+		return vorgabeZeit;
+	}
+	
+	private long parseAbgabeZeit() {
+		// Parse Zeit und Multiplicator (d, h, m, s, ms) aus XML
+		Element zeitNode = document.getRootElement().getChild("Zeit");
+		long multiplicator = Zeiteinheit.valueOf(zeitNode.getAttributeValue("einheit")).getMultiplicator();
+		double zeitWert = Double.parseDouble(zeitNode.getChildText("Abgabe"));
+		// Berechne daraus die Zeit Vorgabe in ms
+		long abgabeZeit = (long)(zeitWert * multiplicator);
+		
+		return abgabeZeit;
 	}
 	
 	private Dschungel parseDschungel() {
@@ -104,6 +127,27 @@ public class XMLParser {
 			}
 		}
 		return schlangenarten;
+	}
+	
+	private List<Schlange> parseSchlangen(Schlangenart[] schlangenarten, Dschungel dschungel) {
+		List<Schlange> schlangen = new ArrayList<Schlange>();
+		Element schlangenNode = document.getRootElement().getChild("Schlangen");
+		for (Element schlangeNode : schlangenNode.getChildren()) {
+			for (Schlangenart schlangenart : schlangenarten) {
+				if (schlangenart.getId().equals(schlangeNode.getAttributeValue("art"))) {
+					Schlange schlange = new Schlange(schlangenart);
+					List <Element> schlangengliedNodes = schlangeNode.getChildren();
+					for (int index = 0; index < schlangengliedNodes.size(); index++) {
+						Element schlangengliedNode = schlangengliedNodes.get(index);
+						Feld feld = dschungel.getFeldById(schlangengliedNode.getAttributeValue("feld"));
+						schlange.addSchlangenglied(index, feld);
+					}
+					schlangen.add(schlange);
+					break;
+				}
+			}
+		}
+		return schlangen;
 	}
 
 	public SchlangenjagdModell getSchlangenjagdModell() {

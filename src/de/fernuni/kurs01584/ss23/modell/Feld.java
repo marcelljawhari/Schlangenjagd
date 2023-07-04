@@ -27,6 +27,7 @@ public class Feld {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Feld' darf das Attribut 'verwendbarkeit' keinen negativen Wert annehmen.");
 		}
+		this.id = id;
 		this.zeichen = zeichen;
 		this.zeile = zeile;
 		this.spalte = spalte;
@@ -57,6 +58,7 @@ public class Feld {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Feld' duerfen die Attribute 'zeile' und 'spalte' keine negativen Werte annehmen.");
 		}
+		this.id = id;
 		this.zeile = zeile;
 		this.spalte = spalte;
 		this.punkte = 0;
@@ -109,7 +111,7 @@ public class Feld {
      * Gibt die ID des Feldes zurück
      * @return ID des Feldes
      */
-	public String getID() {
+	public String getId() {
 		return id;
 	}
 
