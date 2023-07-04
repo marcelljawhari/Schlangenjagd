@@ -1,18 +1,20 @@
 package de.fernuni.kurs01584.ss23.modell;
 
 public class Feld {
+	private String id;
 	private int zeile, spalte, punkte, verwendbarkeit;
 	private char zeichen;
 
 	/***
 	 * Erzeugt eine Instanz der Klasse 'Feld' mit den angegebenen Parametern
+	 * @param id
 	 * @param zeichen
 	 * @param zeile
 	 * @param spalte
 	 * @param punkte
 	 * @param verwendbarkeit
 	 */
-	public Feld(char zeichen, int zeile, int spalte, int punkte, int verwendbarkeit) throws IllegalArgumentException {
+	public Feld(String id, char zeichen, int zeile, int spalte, int punkte, int verwendbarkeit) throws IllegalArgumentException {
 		if (zeile < 0 || spalte < 0) {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Feld' duerfen die Attribute 'zeile' und 'spalte' keine negativen Werte annehmen.");
@@ -34,12 +36,31 @@ public class Feld {
 	
 	/***
 	 * Erzeugt eine Instanz der Klasse 'Feld' mit den angegebenen Parametern und 1 für Punkte und Verwendbarkeit
+	 * @param id
 	 * @param zeichen
 	 * @param zeile
 	 * @param spalte
 	 */
-	public Feld(char zeichen, int zeile, int spalte) {
-		this(zeichen, zeile, spalte, 1, 1);
+	public Feld(String id, char zeichen, int zeile, int spalte) {
+		this(id, zeichen, zeile, spalte, 1, 1);
+	}
+	
+	/***
+	 * Erzeugt eine Instanz der Klasse 'Feld' an der angegebenen Position mit 0 für Punkte und Verwendbarkeit, 
+	 * zeichen bleibt hierbei null
+	 * @param id
+	 * @param zeile
+	 * @param spalte
+	 */
+	public Feld(String id, int zeile, int spalte) {
+		if (zeile < 0 || spalte < 0) {
+			throw new IllegalArgumentException(
+					"Fuer die Klasse 'Feld' duerfen die Attribute 'zeile' und 'spalte' keine negativen Werte annehmen.");
+		}
+		this.zeile = zeile;
+		this.spalte = spalte;
+		this.punkte = 0;
+		this.verwendbarkeit = 0;
 	}
 
 	/***
@@ -82,6 +103,14 @@ public class Feld {
      */
 	public char getZeichen() {
 		return zeichen;
+	}
+
+	/***
+     * Gibt die ID des Feldes zurück
+     * @return ID des Feldes
+     */
+	public String getID() {
+		return id;
 	}
 
 }

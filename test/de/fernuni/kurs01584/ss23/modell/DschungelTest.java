@@ -32,7 +32,7 @@ class DschungelTest {
 	
 	@Test
 	void testeGetFeld() {
-		Feld feld = new Feld('a', 0, 0);
+		Feld feld = new Feld("F0", 'a', 0, 0);
 		Dschungel dschungel = new Dschungel("a", 1, 1);
 		dschungel.setFeld(feld);
 		assertEquals(dschungel.getFeld(feld.getZeile(), feld.getSpalte()), feld, () -> "Das Feld "
@@ -40,7 +40,7 @@ class DschungelTest {
 	}
 	
 	@Test
-	void testeKonstruktorKleinerGleichNullWerteSolltenExceptionWerfen() {
+	void testeKonstruktorKleinerGleichNullWerteSolltenExceptionAusloesen() {
 		int zeilen = 0;
 		int spalten = -4;
 		assertThrows(IllegalArgumentException.class, () -> new Dschungel("A", zeilen, 1),

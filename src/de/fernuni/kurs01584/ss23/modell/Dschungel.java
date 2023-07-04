@@ -67,34 +67,40 @@ public class Dschungel {
 	
 	/***
 	 * Setzt das Feld an der angegebenen Position mit den entsprechenden Parametern in den Dschungel
+	 * @param id
 	 * @param zeichen
 	 * @param zeile
 	 * @param spalte
 	 * @param punkte
 	 * @param verwendbarkeit
 	 */
-	public void setFeld(char zeichen, int zeile, int spalte, int punkte, int verwendbarkeit) throws IllegalArgumentException {
-		try {
-			felder[zeile][spalte] = new Feld(zeichen, zeile, spalte, punkte, verwendbarkeit);
-		} catch (Exception e) {
-			throw e;
-		}
+	public void setFeld(String id, char zeichen, int zeile, int spalte, int punkte, int verwendbarkeit) throws IllegalArgumentException {
+		felder[zeile][spalte] = new Feld(id, zeichen, zeile, spalte, punkte, verwendbarkeit);
 		
 	}
 	
 	/***
 	 * Setzt das Feld an der angegebenen Position mit den entsprechenden Parametern und den
 	 * Standardwerten 1 für Punkte und Verwendbarkeit in den Dschungel
+	 * @param id
 	 * @param zeichen
 	 * @param zeile
 	 * @param spalte
 	 */
-	public void setFeld(char zeichen, int zeile, int spalte) throws IllegalArgumentException {
-		try {
-			setFeld(zeichen, zeile, spalte, 1, 1);
-		} catch (Exception e) {
-			throw e;
-		}
+	public void setFeld(String id, char zeichen, int zeile, int spalte) throws IllegalArgumentException {
+		setFeld(id, zeichen, zeile, spalte, 1, 1);
+	}
+	
+	/***
+	 * Setzt das Feld an der angegebenen Position mit den Standardwerten 
+	 * 0 für Punkte und Verwendbarkeit in den Dschungel
+	 * @param zeile
+	 * @param spalte
+	 */
+	public void setFeld(int zeile, int spalte) throws IllegalArgumentException {
+		// Unvollstaendiges Feld, berechne dementsprechend die ID
+		String id = "F" + (zeile*spalten+spalte);
+		felder[zeile][spalte] = new Feld(id, zeile, spalte);
 	}
 	
 	/***
