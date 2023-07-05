@@ -2,7 +2,10 @@ package de.fernuni.kurs01584.ss23.hauptkomponente;
 
 import java.util.List;
 
+import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
+
 public class Schlangenjagd implements SchlangenjagdAPI {
+	private SchlangenjagdModell schlangenjagdModell;
 	// TODO: Implementierung von Schnittstelle und Programm-Einstieg
 
 	@Override

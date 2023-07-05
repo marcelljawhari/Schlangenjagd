@@ -11,7 +11,6 @@ import de.fernuni.kurs01584.ss23.modell.Dschungel;
 import de.fernuni.kurs01584.ss23.modell.Feld;
 import de.fernuni.kurs01584.ss23.modell.Schlange;
 import de.fernuni.kurs01584.ss23.modell.Schlangenart;
-import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 import de.fernuni.kurs01584.ss23.modell.Zeiteinheit;
 
 public class XMLParser {
@@ -105,7 +104,7 @@ public class XMLParser {
 	private void parseFelder(Dschungel dschungel, List<Element> feldNodes) {
 		// Parse jedes Feld aus der XML und platziere es im Dschungel
 		for (Element feldNode : feldNodes) {
-			char zeichen = feldNode.getText().charAt(0);
+			String zeichen = feldNode.getText();
 			String id = feldNode.getAttributeValue("id");
 			int zeile = Integer.parseInt(feldNode.getAttributeValue("zeile"));
 			int spalte = Integer.parseInt(feldNode.getAttributeValue("spalte"));

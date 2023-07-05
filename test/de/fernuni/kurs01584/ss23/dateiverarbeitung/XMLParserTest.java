@@ -10,7 +10,6 @@ import de.fernuni.kurs01584.ss23.modell.Dschungel;
 import de.fernuni.kurs01584.ss23.modell.Feld;
 import de.fernuni.kurs01584.ss23.modell.Schlange;
 import de.fernuni.kurs01584.ss23.modell.Schlangenart;
-import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 
 class XMLParserTest {
 	

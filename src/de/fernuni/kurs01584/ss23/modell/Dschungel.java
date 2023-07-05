@@ -90,7 +90,7 @@ public class Dschungel {
 	 * @param punkte
 	 * @param verwendbarkeit
 	 */
-	public void setFeld(String id, char zeichen, int zeile, int spalte, int punkte, int verwendbarkeit) throws IllegalArgumentException {
+	public void setFeld(String id, String zeichen, int zeile, int spalte, int punkte, int verwendbarkeit) throws IllegalArgumentException {
 		felder[zeile][spalte] = new Feld(id, zeichen, zeile, spalte, punkte, verwendbarkeit);
 		
 	}
@@ -103,7 +103,7 @@ public class Dschungel {
 	 * @param zeile
 	 * @param spalte
 	 */
-	public void setFeld(String id, char zeichen, int zeile, int spalte) throws IllegalArgumentException {
+	public void setFeld(String id, String zeichen, int zeile, int spalte) throws IllegalArgumentException {
 		setFeld(id, zeichen, zeile, spalte, 1, 1);
 	}
 	

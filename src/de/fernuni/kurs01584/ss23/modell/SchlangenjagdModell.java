@@ -6,19 +6,19 @@ public class SchlangenjagdModell {
 	private Dschungel dschungel;
 	private Schlangenart[] schlangenarten;
 	private List<Schlange> schlangen;
-	private long zeitVorgabe;
-	private long zeitAbgabe;
+	private long vorgabeZeit;
+	private long abgabeZeit;
 	
-	public SchlangenjagdModell (Dschungel dschungel, Schlangenart[] schlangenarten, long zeitVorgabe) {
+	public SchlangenjagdModell (Dschungel dschungel, Schlangenart[] schlangenarten, long vorgabeZeit) {
 		this.dschungel = dschungel;
 		this.schlangenarten = schlangenarten;
-		this.zeitVorgabe = zeitVorgabe;
+		this.vorgabeZeit = vorgabeZeit;
 	}
 	
-	public SchlangenjagdModell (Dschungel dschungel, Schlangenart[] schlangenarten, List<Schlange> schlangen, long zeitVorgabe, long zeitAbgabe) {
-		this(dschungel, schlangenarten, zeitVorgabe);
+	public SchlangenjagdModell (Dschungel dschungel, Schlangenart[] schlangenarten, List<Schlange> schlangen, long vorgabeZeit, long abgabeZeit) {
+		this(dschungel, schlangenarten, vorgabeZeit);
 		this.schlangen = schlangen;
-		this.zeitAbgabe = zeitAbgabe; 
+		this.abgabeZeit = abgabeZeit;
 	}
 
 	public Dschungel getDschungel() {
@@ -29,8 +29,12 @@ public class SchlangenjagdModell {
 		return schlangenarten;
 	}
 
-	public long getZeitVorgabe() {
-		return zeitVorgabe;
+	public long getVorgabeZeit() {
+		return vorgabeZeit;
+	}
+
+	public long getAbgabeZeit() {
+		return abgabeZeit;
 	}
 	
 	public List<Schlange> getSchlangen() {

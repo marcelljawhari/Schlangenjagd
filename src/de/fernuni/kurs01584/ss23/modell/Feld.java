@@ -3,7 +3,7 @@ package de.fernuni.kurs01584.ss23.modell;
 public class Feld {
 	private String id;
 	private int zeile, spalte, punkte, verwendbarkeit;
-	private char zeichen;
+	private String zeichen;
 
 	/***
 	 * Erzeugt eine Instanz der Klasse 'Feld' mit den angegebenen Parametern
@@ -14,7 +14,7 @@ public class Feld {
 	 * @param punkte
 	 * @param verwendbarkeit
 	 */
-	public Feld(String id, char zeichen, int zeile, int spalte, int punkte, int verwendbarkeit) throws IllegalArgumentException {
+	public Feld(String id, String zeichen, int zeile, int spalte, int punkte, int verwendbarkeit) throws IllegalArgumentException {
 		if (zeile < 0 || spalte < 0) {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Feld' duerfen die Attribute 'zeile' und 'spalte' keine negativen Werte annehmen.");
@@ -42,7 +42,7 @@ public class Feld {
 	 * @param zeile
 	 * @param spalte
 	 */
-	public Feld(String id, char zeichen, int zeile, int spalte) {
+	public Feld(String id, String zeichen, int zeile, int spalte) {
 		this(id, zeichen, zeile, spalte, 1, 1);
 	}
 	
@@ -54,15 +54,7 @@ public class Feld {
 	 * @param spalte
 	 */
 	public Feld(String id, int zeile, int spalte) {
-		if (zeile < 0 || spalte < 0) {
-			throw new IllegalArgumentException(
-					"Fuer die Klasse 'Feld' duerfen die Attribute 'zeile' und 'spalte' keine negativen Werte annehmen.");
-		}
-		this.id = id;
-		this.zeile = zeile;
-		this.spalte = spalte;
-		this.punkte = 0;
-		this.verwendbarkeit = 0;
+		this(id, "", zeile, spalte, 0, 0);
 	}
 
 	/***
@@ -103,7 +95,7 @@ public class Feld {
      * Gibt das Zeichen des Feldes zurück
      * @return Zeichen des Feldes
      */
-	public char getZeichen() {
+	public String getZeichen() {
 		return zeichen;
 	}
 
