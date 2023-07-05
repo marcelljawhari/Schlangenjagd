@@ -8,19 +8,20 @@ import org.jdom2.input.SAXBuilder;
 import org.jdom2.input.sax.XMLReaders;
 
 public class DateiLeser {
-	private Document document;
+	private SAXBuilder builder;
 	
-	public DateiLeser(final String fileName) throws JDOMException, IOException {
-		SAXBuilder builder = new SAXBuilder(XMLReaders.DTDVALIDATING);
+	public DateiLeser() {
+		builder = new SAXBuilder(XMLReaders.DTDVALIDATING);
+	}
+	
+	public Document lese(String fileName) throws JDOMException, IOException {
 		try {
-			document = builder.build(fileName);
-		} catch (Exception e) {
+			Document document = builder.build(fileName);
+			return document;
+		} catch (IOException e) {
+			throw e;
+		} catch (JDOMException e) {
 			throw e;
 		}
 	}
-	
-	public Document getDocument() {
-		return document;
-	}
-	
 }

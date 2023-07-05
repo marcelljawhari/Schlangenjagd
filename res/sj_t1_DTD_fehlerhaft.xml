@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE Schlangenjagd SYSTEM "schlangenjagd.dtd" >
+<Schlangenjagd>
+	<Dschungel zeilen="2" spalten="4">
+	</Dschungel>
+	<Schlangenarten>
+	</Schlangenarten>
+</Schlangenjagd>

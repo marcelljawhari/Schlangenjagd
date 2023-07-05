@@ -1,7 +1,14 @@
 package de.fernuni.kurs01584.ss23.algorithmus;
 
-//import de.fernuni.kurs01584.ss23.modell.*;
+import de.fernuni.kurs01584.ss23.modell.*;
 
 public class DschungelGenerator {
-
+	
+	public DschungelGenerator() {
+		
+	}
+	
+	public SchlangenjagdModell erzeugeProbleminstanz() {
+		
+	}
 }

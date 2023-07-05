@@ -11,16 +11,18 @@ class DateiLeserTest {
 	@Test
 	void testeKonstruktorVollstaendigeProbleminstanzSollteKeineExceptionWerfen() {
 		String file = "./res/sj_p1_probleminstanz.xml";
+		DateiLeser leser = new DateiLeser();
 		
-		assertDoesNotThrow(() -> new DateiLeser(file),
+		assertDoesNotThrow(() -> leser.lese(file),
 				() -> "Fuer das Vollstaendige File '" + file + "' wird eine Ausnahme erzeugt.");
 	}
 	
 	@Test
 	void testeKonstruktorFehlerhafteProbleminstanzSollteExceptionWerfen() {
-		String file = "./res/Test_DTD_Fehlerhaft.xml";
+		String file = "./res/sj_t1_DTD_fehlerhaft.xml";
+		DateiLeser leser = new DateiLeser();
 		
-		assertThrows(JDOMException.class, () -> new DateiLeser(file),
+		assertThrows(JDOMException.class, () -> leser.lese(file),
 				() -> "Fuer das Fehlerhafte File '" + file + "' wird keine Ausnahme erzeugt.");
 	}
 

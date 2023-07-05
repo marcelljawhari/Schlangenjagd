@@ -16,48 +16,20 @@ import de.fernuni.kurs01584.ss23.modell.Zeiteinheit;
 
 public class XMLParser {
 	private Document document;
-	private SchlangenjagdModell schlangenjagdModell;
 	
 	public XMLParser(Document document) {
 		this.document = document;
-		long vorgabeZeit = parseVorgabeZeit();
-		Dschungel dschungel = parseDschungel();
-		Schlangenart[] schlangenarten = parseSchlangenarten();
-		
-		// Wenn die RootNode mehr als 3 Kinder hat handelt es sich um eine Loesung
-		if (document.getRootElement().getChildren().size() > 3) {
-			long abgabeZeit = parseAbgabeZeit();
-			List<Schlange> schlangen = parseSchlangen(schlangenarten, dschungel);
-			schlangenjagdModell = new SchlangenjagdModell(dschungel, schlangenarten, schlangen, vorgabeZeit, abgabeZeit);
-		} else {
-			schlangenjagdModell = new SchlangenjagdModell(dschungel, schlangenarten, vorgabeZeit);
-		}
-		
 	}
 	
-	private long parseVorgabeZeit() {
-		// Parse Zeit und Multiplicator (d, h, m, s, ms) aus XML
-		Element zeitNode = document.getRootElement().getChild("Zeit");
-		long multiplicator = Zeiteinheit.valueOf(zeitNode.getAttributeValue("einheit")).getMultiplicator();
-		double zeitWert = Double.parseDouble(zeitNode.getChildText("Vorgabe"));
-		// Berechne daraus die Zeit Vorgabe in ms
-		long vorgabeZeit = (long)(zeitWert * multiplicator);
-		
-		return vorgabeZeit;
+	public long parseVorgabeZeit() {
+		return parseZeitInMs("Vorgabe");
 	}
 	
-	private long parseAbgabeZeit() {
-		// Parse Zeit und Multiplicator (d, h, m, s, ms) aus XML
-		Element zeitNode = document.getRootElement().getChild("Zeit");
-		long multiplicator = Zeiteinheit.valueOf(zeitNode.getAttributeValue("einheit")).getMultiplicator();
-		double zeitWert = Double.parseDouble(zeitNode.getChildText("Abgabe"));
-		// Berechne daraus die Zeit Vorgabe in ms
-		long abgabeZeit = (long)(zeitWert * multiplicator);
-		
-		return abgabeZeit;
+	public long parseAbgabeZeit() {
+		return parseZeitInMs("Abgabe");
 	}
 	
-	private Dschungel parseDschungel() {
+	public Dschungel parseDschungel() {
 		// Parse Dschungelparameter (Zeichenmenge, Zeilen, Spalten) aus XML
 		Element dschungelNode = document.getRootElement().getChild("Dschungel");
 		String zeichenmenge = dschungelNode.getAttributeValue("zeichen");
@@ -69,6 +41,65 @@ public class XMLParser {
 		parseFelder(dschungel, dschungelNode.getChildren());
 		
 		return dschungel;
+	}
+	
+	public Schlangenart[] parseSchlangenarten() {
+		Element schlangenartenNode = document.getRootElement().getChild("Schlangenarten");
+		List<Element> schlangenartNodes = schlangenartenNode.getChildren();
+		Schlangenart[] schlangenarten = new Schlangenart[schlangenartNodes.size()];
+		// Jede Schlangenart im XML fuegen wir nun dem schlangenarten Array hinzu
+		for (int i = 0; i < schlangenartNodes.size(); i++) {
+			String id = schlangenartNodes.get(i).getAttributeValue("id");
+			String zeichenkette = schlangenartNodes.get(i).getChildText("Zeichenkette");
+			int punkte = Integer.parseInt(schlangenartNodes.get(i).getAttributeValue("punkte"));
+			int anzahl = Integer.parseInt(schlangenartNodes.get(i).getAttributeValue("anzahl"));
+			Element nachbarschaftsstrukturNode = schlangenartNodes.get(i).getChild("Nachbarschaftsstruktur");
+			
+			// Wir differenzieren bei der Nachbarschaftsstruktur zwischen Distanz und Sprung
+			// Fuer jeden dieser Faelle brauchen wir einen unterschiedlichen Konstruktor
+			if (nachbarschaftsstrukturNode.getAttributeValue("typ").equals("Distanz")) {
+				int distanz = Integer.parseInt(nachbarschaftsstrukturNode.getChild("Parameter").getAttributeValue("wert"));
+				schlangenarten[i] = new Schlangenart(id, zeichenkette, punkte, anzahl, distanz);
+			} else {
+				List<Element> parameterNodes = nachbarschaftsstrukturNode.getChildren("Parameter");
+				int x = Integer.parseInt(parameterNodes.get(0).getAttributeValue("wert"));
+				int y = Integer.parseInt(parameterNodes.get(1).getAttributeValue("wert"));
+				schlangenarten[i] = new Schlangenart(id, zeichenkette, punkte, anzahl, x, y);
+			}
+		}
+		return schlangenarten;
+	}
+	
+	public List<Schlange> parseSchlangen(Schlangenart[] schlangenarten, Dschungel dschungel) {
+		List<Schlange> schlangen = new ArrayList<Schlange>();
+		Element schlangenNode = document.getRootElement().getChild("Schlangen");
+		for (Element schlangeNode : schlangenNode.getChildren()) {
+			for (Schlangenart schlangenart : schlangenarten) {
+				if (schlangenart.getId().equals(schlangeNode.getAttributeValue("art"))) {
+					Schlange schlange = new Schlange(schlangenart);
+					List <Element> schlangengliedNodes = schlangeNode.getChildren();
+					for (int index = 0; index < schlangengliedNodes.size(); index++) {
+						Element schlangengliedNode = schlangengliedNodes.get(index);
+						Feld feld = dschungel.getFeldById(schlangengliedNode.getAttributeValue("feld"));
+						schlange.addSchlangenglied(index, feld);
+					}
+					schlangen.add(schlange);
+					break;
+				}
+			}
+		}
+		return schlangen;
+	}
+	
+	private long parseZeitInMs(String typ) {
+		// Parse Zeit und Multiplicator (d, h, m, s, ms) aus XML
+		Element zeitNode = document.getRootElement().getChild("Zeit");
+		long multiplicator = Zeiteinheit.valueOf(zeitNode.getAttributeValue("einheit")).getMultiplicator();
+		double zeitWert = Double.parseDouble(zeitNode.getChildText(typ));
+		// Berechne daraus die Zeit in ms
+		long zeitInMs = (long)(zeitWert * multiplicator);
+		
+		return zeitInMs;
 	}
 	
 	private void parseFelder(Dschungel dschungel, List<Element> feldNodes) {
@@ -100,58 +131,6 @@ public class XMLParser {
 				}
 			}
 		}
-	}
-	
-	private Schlangenart[] parseSchlangenarten() {
-		Element schlangenartenNode = document.getRootElement().getChild("Schlangenarten");
-		List<Element> schlangenartNodes = schlangenartenNode.getChildren();
-		Schlangenart[] schlangenarten = new Schlangenart[schlangenartNodes.size()];
-		// Jede Schlangenart im XML fuegen wir nun dem schlangenarten Array hinzu
-		for (int i = 0; i < schlangenartNodes.size(); i++) {
-			String id = schlangenartNodes.get(i).getAttributeValue("id");
-			String zeichenkette = schlangenartNodes.get(i).getChildText("Zeichenkette");
-			int punkte = Integer.parseInt(schlangenartNodes.get(i).getAttributeValue("punkte"));
-			int anzahl = Integer.parseInt(schlangenartNodes.get(i).getAttributeValue("anzahl"));
-			Element nachbarschaftsstrukturNode = schlangenartNodes.get(i).getChild("Nachbarschaftsstruktur");
-			
-			// Wir differenzieren bei der Nachbarschaftsstruktur zwischen Distanz und Sprung
-			// Fuer jeden dieser Faelle brauchen wir einen unterschiedlichen Konstruktor
-			if (nachbarschaftsstrukturNode.getAttributeValue("typ").equals("Distanz")) {
-				int distanz = Integer.parseInt(nachbarschaftsstrukturNode.getChild("Parameter").getAttributeValue("wert"));
-				schlangenarten[i] = new Schlangenart(id, zeichenkette, punkte, anzahl, distanz);
-			} else {
-				List<Element> parameterNodes = nachbarschaftsstrukturNode.getChildren("Parameter");
-				int x = Integer.parseInt(parameterNodes.get(0).getAttributeValue("wert"));
-				int y = Integer.parseInt(parameterNodes.get(1).getAttributeValue("wert"));
-				schlangenarten[i] = new Schlangenart(id, zeichenkette, punkte, anzahl, x, y);
-			}
-		}
-		return schlangenarten;
-	}
-	
-	private List<Schlange> parseSchlangen(Schlangenart[] schlangenarten, Dschungel dschungel) {
-		List<Schlange> schlangen = new ArrayList<Schlange>();
-		Element schlangenNode = document.getRootElement().getChild("Schlangen");
-		for (Element schlangeNode : schlangenNode.getChildren()) {
-			for (Schlangenart schlangenart : schlangenarten) {
-				if (schlangenart.getId().equals(schlangeNode.getAttributeValue("art"))) {
-					Schlange schlange = new Schlange(schlangenart);
-					List <Element> schlangengliedNodes = schlangeNode.getChildren();
-					for (int index = 0; index < schlangengliedNodes.size(); index++) {
-						Element schlangengliedNode = schlangengliedNodes.get(index);
-						Feld feld = dschungel.getFeldById(schlangengliedNode.getAttributeValue("feld"));
-						schlange.addSchlangenglied(index, feld);
-					}
-					schlangen.add(schlange);
-					break;
-				}
-			}
-		}
-		return schlangen;
-	}
-
-	public SchlangenjagdModell getSchlangenjagdModell() {
-		return schlangenjagdModell;
 	}
 	
 }

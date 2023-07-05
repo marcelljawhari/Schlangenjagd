@@ -9,20 +9,34 @@ import org.junit.jupiter.api.Test;
 import de.fernuni.kurs01584.ss23.modell.Dschungel;
 import de.fernuni.kurs01584.ss23.modell.Feld;
 import de.fernuni.kurs01584.ss23.modell.Schlange;
+import de.fernuni.kurs01584.ss23.modell.Schlangenart;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 
 class XMLParserTest {
-
+	
 	@Test
-	void testeGetZeitVorgabe() {
-		String file = "./res/sj_p1_probleminstanz.xml";
-		long zeitVorgabe = 60000;
+	void testeGetVorgabeZeit() {
+		String file = "./res/sj_t1_probleminstanz.xml";
+		long vorgabeZeit = 60000;
 		try {
-			DateiLeser leser = new DateiLeser(file);
-			XMLParser parser = new XMLParser(leser.getDocument());
-			SchlangenjagdModell schlangenjagdModell = parser.getSchlangenjagdModell();
-			assertEquals(zeitVorgabe, schlangenjagdModell.getZeitVorgabe(), () -> "Die Zeitvorgabe '" + schlangenjagdModell.getZeitVorgabe() 
-			+ "' entspricht nicht dem vorgegebenen Wert '" + zeitVorgabe + "'.");
+			DateiLeser leser = new DateiLeser();
+			XMLParser parser = new XMLParser(leser.lese(file));
+			assertEquals(vorgabeZeit, parser.parseVorgabeZeit(), () -> "Die gelesene Zeitvorgabe '" + parser.parseVorgabeZeit() 
+			+ "' entspricht nicht dem vorgegebenen Wert '" + vorgabeZeit + "'.");
+		} catch (Exception e) {
+			fail("Unerwartete Exception " + e + " wurde ausgeloest.");
+		}
+	}
+	
+	@Test
+	void testeGetAbgabeZeit() {
+		String file = "./res/sj_t1_loesung.xml";
+		long abgabeZeit = 1;
+		try {
+			DateiLeser leser = new DateiLeser();
+			XMLParser parser = new XMLParser(leser.lese(file));
+			assertEquals(abgabeZeit, parser.parseAbgabeZeit(), () -> "Die gelesene Abgabezeit '" + parser.parseAbgabeZeit() 
+			+ "' entspricht nicht dem vorgegebenen Wert '" + abgabeZeit + "'.");
 		} catch (Exception e) {
 			fail("Unerwartete Exception " + e + " wurde ausgeloest.");
 		}
@@ -30,12 +44,11 @@ class XMLParserTest {
 
 	@Test
 	void testeGetVollstaendigerDschungelFelderAnzahl() {
-		String file = "./res/sj_p1_probleminstanz.xml";
+		String file = "./res/sj_t1_probleminstanz.xml";
 		try {
-			DateiLeser leser = new DateiLeser(file);
-			XMLParser parser = new XMLParser(leser.getDocument());
-			SchlangenjagdModell schlangenjagdModell = parser.getSchlangenjagdModell();
-			Dschungel dschungel = schlangenjagdModell.getDschungel();
+			DateiLeser leser = new DateiLeser();
+			XMLParser parser = new XMLParser(leser.lese(file));
+			Dschungel dschungel = parser.parseDschungel();
 			Feld[][] felder = dschungel.getFelder();
 			
 			for (int zeile = 0; zeile < dschungel.getZeilen(); zeile++) {
@@ -52,12 +65,11 @@ class XMLParserTest {
 
 	@Test
 	void testeGetUnvollstaendigerDschungelFelderAnzahl() {
-		String file = "./res/sj_p1_unvollstaendig.xml";
+		String file = "./res/sj_t1_unvollstaendig.xml";
 		try {
-			DateiLeser leser = new DateiLeser(file);
-			XMLParser parser = new XMLParser(leser.getDocument());
-			SchlangenjagdModell schlangenjagdModell = parser.getSchlangenjagdModell();
-			Dschungel dschungel = schlangenjagdModell.getDschungel();
+			DateiLeser leser = new DateiLeser();
+			XMLParser parser = new XMLParser(leser.lese(file));
+			Dschungel dschungel = parser.parseDschungel();
 			Feld[][] felder = dschungel.getFelder();
 			
 			for (int zeile = 0; zeile < dschungel.getZeilen(); zeile++) {
@@ -74,12 +86,13 @@ class XMLParserTest {
 
 	@Test
 	void testeGetLoesungSchlangenAnzahl() {
-		String file = "./res/sj_p2_loesung.xml";
+		String file = "./res/sj_t2_loesung.xml";
 		try {
-			DateiLeser leser = new DateiLeser(file);
-			XMLParser parser = new XMLParser(leser.getDocument());
-			SchlangenjagdModell schlangenjagdModell = parser.getSchlangenjagdModell();
-			List <Schlange> schlangen = schlangenjagdModell.getSchlangen();
+			DateiLeser leser = new DateiLeser();
+			XMLParser parser = new XMLParser(leser.lese(file));
+			Schlangenart[] schlangenarten = parser.parseSchlangenarten();
+			Dschungel dschungel = parser.parseDschungel();
+			List <Schlange> schlangen = parser.parseSchlangen(schlangenarten, dschungel);
 			int schlangenAnzahl = 6;
 			assertEquals(schlangenAnzahl, schlangen.size(), "Es wurden " + schlangen.size() + " statt "
 			+ schlangenAnzahl + " Schlangen gefunden.");
