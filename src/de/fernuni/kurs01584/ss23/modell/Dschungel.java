@@ -1,5 +1,8 @@
 package de.fernuni.kurs01584.ss23.modell;
 
+import java.util.List;
+import java.util.ArrayList;
+
 public class Dschungel {
 	private int zeilen;
 	private int spalten;
@@ -81,6 +84,28 @@ public class Dschungel {
 		return null;
 	}
 	
+	public List<Feld> getFelderByZeichen(String zeichen) {
+		List<Feld> felderByZeichen = new ArrayList<Feld>();
+		for (Feld[] zeile : felder) {
+			for (Feld feld : zeile) {
+				if (feld.getZeichen().equals(zeichen)) {
+					felderByZeichen.add(feld);
+				}
+			}
+		}
+		return felderByZeichen;
+	}
+	
+	public int[][] getVerwendbarkeiten() {
+		int[][] verwendbarkeiten = new int[zeilen][spalten];
+		for(int zeile = 0; zeile < zeilen; zeile++) {
+			for(int spalte = 0; spalte < spalten; spalte++) {
+				verwendbarkeiten[zeile][spalte] = felder[zeile][spalte].getVerwendbarkeit();
+			}
+		}
+		return verwendbarkeiten;
+	}
+	
 	/***
 	 * Setzt das Feld an der angegebenen Position mit den entsprechenden Parametern in den Dschungel
 	 * @param id
@@ -127,5 +152,12 @@ public class Dschungel {
 	 */
 	public void setFeld(Feld feld) {
 		felder[feld.getZeile()][feld.getSpalte()] = feld;
+	}
+	
+	/***
+	 * Setzt die Felder des Dschungel zurück
+	 */
+	public void loescheFelder() {
+		felder = new Feld[zeilen][spalten];
 	}
 }

@@ -80,7 +80,7 @@ public class XMLParser {
 					for (int index = 0; index < schlangengliedNodes.size(); index++) {
 						Element schlangengliedNode = schlangengliedNodes.get(index);
 						Feld feld = dschungel.getFeldById(schlangengliedNode.getAttributeValue("feld"));
-						schlange.addSchlangenglied(index, feld);
+						schlange.addSchlangenglied(feld);
 					}
 					schlangen.add(schlange);
 					break;
@@ -102,6 +102,8 @@ public class XMLParser {
 	}
 	
 	private void parseFelder(Dschungel dschungel, List<Element> feldNodes) {
+		// TODO: Fehler bei Feldern mit mehr als einem Zeichen
+		
 		// Parse jedes Feld aus der XML und platziere es im Dschungel
 		for (Element feldNode : feldNodes) {
 			String zeichen = feldNode.getText();

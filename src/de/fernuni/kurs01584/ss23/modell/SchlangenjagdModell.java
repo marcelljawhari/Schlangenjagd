@@ -37,6 +37,10 @@ public class SchlangenjagdModell {
 		return abgabeZeit;
 	}
 	
+	public void setAbgabeZeit(long abgabeZeit) {
+		this.abgabeZeit = abgabeZeit;
+	}
+	
 	public List<Schlange> getSchlangen() {
 		return schlangen;
 	}

@@ -5,16 +5,25 @@ import java.util.ArrayList;
 
 public class Schlange {
 	Schlangenart schlangenart;
-	
 	List<Schlangenglied> schlangenglieder;
+	int laenge;
 	
 	public Schlange(Schlangenart schlangenart) {
 		this.schlangenart = schlangenart;
 		schlangenglieder = new ArrayList<Schlangenglied>();
+		laenge = schlangenart.getZeichenkette().length();
 	}
 	
-	public void addSchlangenglied(int index, Feld feld) {
+	public void addSchlangenglied(Feld feld) {
+		int index = 0;
+		if(schlangenglieder.size() > 0) {
+			index = getLetztesSchlangengled().getIndex() + 1;
+		}
 		schlangenglieder.add(new Schlangenglied(index, feld, this));
+	}
+	
+	public void addSchlangenglied(Schlangenglied schlangenglied) {
+		schlangenglieder.add(schlangenglied);
 	}
 	
 	public void removeSchlangenglied() {
@@ -25,11 +34,19 @@ public class Schlange {
 		return schlangenglieder;
 	}
 	
+	public Schlangenglied getLetztesSchlangengled() {
+		return schlangenglieder.get(schlangenglieder.size()-1);
+	}
+	
+	public Schlangenart getSchlangenart() {
+		return schlangenart;
+	}
+	
+	public int getLaenge() {
+		return laenge;
+	}
+	
 	public boolean isVollstaendig() {
-		if(schlangenglieder.size() < schlangenart.getZeichenkette().length()) {
-			return false;
-		} else {
-			return true;
-		}
+		return schlangenglieder.size() == schlangenart.getZeichenkette().length();
 	}
 }

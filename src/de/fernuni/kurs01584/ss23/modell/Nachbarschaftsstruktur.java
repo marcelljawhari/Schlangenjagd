@@ -41,39 +41,63 @@ public class Nachbarschaftsstruktur {
 	 */
 	public Nachbarschaftsstruktur(int deltaX, int deltaY) {
 		// deltaX und deltaY duerfen nur Werte groesser als 0 sein
-		if(deltaX <= 0 || deltaY <= 0) {
+		if(deltaX < 0 || deltaY < 0) {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Nachbarschaftsstruktur' duerfen die Parameter 'deltaX' und 'deltaY' keine "
-					+ "Werte kleiner gleich Null annehmen.");
+					+ "Werte kleiner als annehmen.");
+		}
+		if(deltaX == 0 && deltaY == 0) {
+			throw new IllegalArgumentException(
+					"Fuer die Klasse 'Nachbarschaftsstruktur' duerfen nicht beide Parameter 'deltaX' und 'deltaY' keine "
+					+ "Null als Wert annehmen.");
 		}
 		int deltaLength;
-		if(deltaX == deltaY) {
-			// Wenn deltaX und deltaY gleich sind haben wir nur 4 Nachbarn 
+		if(deltaX == deltaY || (deltaX == 0 || deltaY == 0)) {
+			// Wenn deltaX und deltaY gleich sind bzw eines der beiden null ist haben wir nur 4 Nachbarn 
 			deltaLength = 4;
 		} else {
-			// Wenn deltaX und deltaY nicht gleich sind haben wir 8 Nachbarn 
+			// Wenn deltaX und deltaY nicht gleich und keines der beiden null sind haben wir 8 Nachbarn 
 			deltaLength = 8;
 		}
 		deltas = new int[deltaLength][2];
-		int index = 0;
-		int x = deltaX;
-		// wir iterieren durch die Felder der Nachbarschaftsstruktur und befüllen das delta Array
-		while(x>=-deltaX) {
-			int y = deltaY;
-			while(y>=-deltaY) {
-				deltas[index][0] = x;
-				deltas[index][1] = y;
-				index++;
-				// wenn deltaX und deltaY ungleich sind, dann fügen wir ebenso den umgekehrten Wert ein
-				// also zB 1,2 und ebenso 2,1
-				if(deltaX != deltaY) {
-					deltas[index][0] = y;
-					deltas[index][1] = x;
+		
+		if(deltaX != 0 && deltaY != 0) {
+			int index = 0;
+			int x = deltaX;
+			// wir iterieren durch die Felder der Nachbarschaftsstruktur und befüllen das delta Array
+			while(x>=-deltaX) {
+				int y = deltaY;
+				while(y>=-deltaY) {
+					deltas[index][0] = x;
+					deltas[index][1] = y;
 					index++;
+					// wenn deltaX und deltaY ungleich sind, dann fügen wir ebenso den umgekehrten Wert ein
+					// also zB 1,2 und ebenso 2,1
+					if(deltaX != deltaY) {
+						deltas[index][0] = y;
+						deltas[index][1] = x;
+						index++;
+					}
+					y = y - 2*deltaY;
 				}
-				y = y - 2*deltaY;
+				x = x - 2*deltaX;
 			}
-			x = x - 2*deltaX;
+		} else {
+			int index = 0;
+			int x;
+			if(deltaX == 0) {
+				x = deltaY;
+			} else {
+				x = deltaX;
+			}
+			for(int z = x; z > -x; z = -z) {
+				deltas[index][0] = 0;
+				deltas[index][1] = z;
+			}
+			for(int z = x; z > -x; z = -z) {
+				deltas[index][0] = z;
+				deltas[index][1] = 0;
+			}
 		}
 	}
 	
