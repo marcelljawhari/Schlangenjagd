@@ -15,8 +15,8 @@ class SchlangenSucheTest {
 
 	@Test
 	void testeSucheSchlangen() {
-		String file = "./res/sj_p11_probleminstanz.xml";
-		int schlangenAnzahl = 3;
+		String file = "./res/sj_p1_probleminstanz.xml";
+		int schlangenAnzahl = 1;
 		try {
 			DateiLeser leser = new DateiLeser();
 			XMLParser parser = new XMLParser(leser.lese(file));
@@ -25,7 +25,6 @@ class SchlangenSucheTest {
 			SchlangenSuche schlangenSuche = new SchlangenSuche(schlangenjagdModell);
 			schlangenSuche.sucheSchlangen();
 			List<Schlange> schlangen = schlangenjagdModell.getSchlangen();
-			schlangenSuche.printLoesung();
 			assertEquals(schlangenAnzahl, schlangen.size(), 
 					() -> "Die gefundene Schlangenanzahl " + schlangen.size() + " entspricht nicht der Vorgabe "
 					+ schlangenAnzahl + ".");

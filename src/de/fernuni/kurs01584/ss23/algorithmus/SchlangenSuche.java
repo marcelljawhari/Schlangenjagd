@@ -35,21 +35,6 @@ public class SchlangenSuche {
 		schlangenjagdModell.setAbgabeZeit(getVergangeneZeit());
 	}
 	
-	private void speichereLoesung() {
-		List<Schlange> loesung = new ArrayList<Schlange>();
-		for(Schlange schlange : schlangen) {
-			Schlange neueSchlange = new Schlange(schlange.getSchlangenart());
-			List<Schlangenglied> schlangenglieder = schlange.getSchlangenglieder();
-			for(int i = 0; i < schlangenglieder.size(); i++) {
-				Schlangenglied schlangenglied = schlangenglieder.get(i);
-				Schlangenglied neuesSchlangenglied = new Schlangenglied(schlangenglied.getIndex(), schlangenglied.getFeld(), neueSchlange);
-				neueSchlange.addSchlangenglied(neuesSchlangenglied);
-			}
-			loesung.add(neueSchlange);
-		}
-		schlangenjagdModell.setSchlangen(loesung);
-	}
-	
 	private void sucheSchlange() {
 		if(aktuellePunkte > maxPunkte) {
 			maxPunkte = aktuellePunkte;
@@ -78,6 +63,9 @@ public class SchlangenSuche {
 			sucheSchlange();
 			return;
 		}
+		if(vorgabeZeitErreicht()) {
+			return;
+		}
 		int index = vorherigesSchlangenglied.getIndex() + 1;
 		List<Feld> nachbarfelder = erzeugeNachbarfelder(vorherigesSchlangenglied);
 		feldSortierer.sortiereByPunkte(nachbarfelder);
@@ -87,6 +75,21 @@ public class SchlangenSuche {
 			sucheSchlangenglied(schlange, schlangenglied);
 			removeSchlangenglied(schlange, schlangenglied, nachbarfeld);
 		}		
+	}
+	
+	private void speichereLoesung() {
+		List<Schlange> loesung = new ArrayList<Schlange>();
+		for(Schlange schlange : schlangen) {
+			Schlange neueSchlange = new Schlange(schlange.getSchlangenart());
+			List<Schlangenglied> schlangenglieder = schlange.getSchlangenglieder();
+			for(int i = 0; i < schlangenglieder.size(); i++) {
+				Schlangenglied schlangenglied = schlangenglieder.get(i);
+				Schlangenglied neuesSchlangenglied = new Schlangenglied(schlangenglied.getIndex(), schlangenglied.getFeld(), neueSchlange);
+				neueSchlange.addSchlangenglied(neuesSchlangenglied);
+			}
+			loesung.add(neueSchlange);
+		}
+		schlangenjagdModell.setSchlangen(loesung);
 	}
 	
 	private void addSchlange(Schlange schlange, Schlangenglied schlangenkopf, Feld startfeld) {
@@ -190,64 +193,24 @@ public class SchlangenSuche {
 		return (System.currentTimeMillis() - startZeit);
 	}
 	
-	public int bewerteLoesung() {
-		int punkte = 0;
-		for(Schlange schlange : schlangenjagdModell.getSchlangen()) {
-			punkte += schlange.getSchlangenart().getPunkte();
-			for(Schlangenglied schlangenglied : schlange.getSchlangenglieder()) {
-				punkte += schlangenglied.getFeld().getPunkte();
-			}
-		}
-		return punkte;
-	}
-	
-	public void printLoesung() {
-		System.out.println("Loesung:");
-		System.out.println("Abgabezeit: " + schlangenjagdModell.getAbgabeZeit());
-		System.out.println("Punkte: " + bewerteLoesung());
-		for(Schlange schlange : schlangenjagdModell.getSchlangen()) {
-			System.out.println("Schlange: '" + schlange.getSchlangenart().getZeichenkette() 
-					+ "' art: '" + schlange.getSchlangenart().getId() + "'.");
-		}
-	}
-	
-	
-//	Bakctracking Algorithmus in pseudo-code	
-//
-//	METHODE sucheSchlange() {
-//		WENN (aktuelle Punkte > bisher maximale Punkte) {
-//				speichere Lösung
+//	public int bewerteLoesung() {
+//		int punkte = 0;
+//		for(Schlange schlange : schlangenjagdModell.getSchlangen()) {
+//			punkte += schlange.getSchlangenart().getPunkte();
+//			for(Schlangenglied schlangenglied : schlange.getSchlangenglieder()) {
+//				punkte += schlangenglied.getFeld().getPunkte();
+//			}
 //		}
-//		WENN (Zeitvorgabe erreicht) {
-//			beende Suche und gebe Lösung zurück
-//		}
-//		erzeuge zulässige Startfelder
-//		priorisiere und sortiere zulässige Startfelder
-//		FÜR (Startfeld in zulässige Startfelder) {
-//			bestimme zulässige Schlangenarten für Startfeld
-//			priorisiere und sortiere zulässige Schlangenarten
-//			FÜR (Schlangenart in Schlangenarten)
-//				erzeuge neue Schlange mit Schlangenkopf für Schlangenart
-//				setze Schlangenkopf auf Startfeld
-//				sucheSchlangenglied(Schlangenkopf)
-//				entferne Schlangenkopf und Schlange
-// 			}
+//		return punkte;
+//	}
+//	
+//	public void printLoesung() {
+//		System.out.println("Loesung:");
+//		System.out.println("Abgabezeit: " + schlangenjagdModell.getAbgabeZeit());
+//		System.out.println("Punkte: " + bewerteLoesung());
+//		for(Schlange schlange : schlangenjagdModell.getSchlangen()) {
+//			System.out.println("Schlange: '" + schlange.getSchlangenart().getZeichenkette() 
+//					+ "' art: '" + schlange.getSchlangenart().getId() + "'.");
 //		}
 //	}
-//
-//	METHODE sucheSchlangenglied(vorherigesGlied) {
-//		WENN (vorherigesGlied ist letztes Schlangenglied) {
-//			sucheSchlange()
-//			RUECKGABE
-//		}
-//		erzeuge zulässige Nachbarfelder für vorherigesGlied
-//		priorisiere und sortiere zulässige Nachbarfelder
-//		FÜR (Nachbarfeld in zulässige Nachbarfelder) {
-//			erzeuge neues Schlangenglied
-//			setze Schlangenglied auf Nachbarfeld
-//			sucheSchlangenglied(Schlangenglied)
-//			entferne Schlangenglied
-//		}
-//	}
-	
 }
