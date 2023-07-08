@@ -192,25 +192,4 @@ public class SchlangenSuche {
 	private long getVergangeneZeit() {
 		return (System.currentTimeMillis() - startZeit);
 	}
-	
-//	public int bewerteLoesung() {
-//		int punkte = 0;
-//		for(Schlange schlange : schlangenjagdModell.getSchlangen()) {
-//			punkte += schlange.getSchlangenart().getPunkte();
-//			for(Schlangenglied schlangenglied : schlange.getSchlangenglieder()) {
-//				punkte += schlangenglied.getFeld().getPunkte();
-//			}
-//		}
-//		return punkte;
-//	}
-//	
-//	public void printLoesung() {
-//		System.out.println("Loesung:");
-//		System.out.println("Abgabezeit: " + schlangenjagdModell.getAbgabeZeit());
-//		System.out.println("Punkte: " + bewerteLoesung());
-//		for(Schlange schlange : schlangenjagdModell.getSchlangen()) {
-//			System.out.println("Schlange: '" + schlange.getSchlangenart().getZeichenkette() 
-//					+ "' art: '" + schlange.getSchlangenart().getId() + "'.");
-//		}
-//	}
 }
