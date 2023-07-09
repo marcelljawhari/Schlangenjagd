@@ -42,6 +42,15 @@ public class Schlange {
 		return schlangenart;
 	}
 	
+	public boolean belegtFeld(Feld feld) {
+		for(Schlangenglied schlangenglied : schlangenglieder) {
+			if(schlangenglied.getFeld().equals(feld)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public int getLaenge() {
 		return laenge;
 	}

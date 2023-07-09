@@ -42,7 +42,7 @@ public class Feld {
 	 * @param zeile
 	 * @param spalte
 	 */
-	public Feld(String id, String zeichen, int zeile, int spalte) {
+	public Feld(String id, String zeichen, int zeile, int spalte) throws IllegalArgumentException {
 		this(id, zeichen, zeile, spalte, 1, 1);
 	}
 	
@@ -53,7 +53,7 @@ public class Feld {
 	 * @param zeile
 	 * @param spalte
 	 */
-	public Feld(String id, int zeile, int spalte) {
+	public Feld(String id, int zeile, int spalte) throws IllegalArgumentException {
 		this(id, "", zeile, spalte, 0, 0);
 	}
 

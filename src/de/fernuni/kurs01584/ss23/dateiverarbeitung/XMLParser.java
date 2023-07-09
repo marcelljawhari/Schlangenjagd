@@ -120,17 +120,7 @@ public class XMLParser {
 		// dann ist die Probleminstanz unvollstaendig und fehlende Felder muessen
 		// ergänzt werden.
 		if (feldNodes.size() < (dschungel.getSpalten() * dschungel.getZeilen())) {
-			befuelleUeberbleibendeFelder(dschungel);
-		}
-	}
-	
-	private void befuelleUeberbleibendeFelder(Dschungel dschungel) {
-		for (int zeile = 0; zeile < dschungel.getZeilen(); zeile++) {
-			for (int spalte = 0; spalte < dschungel.getSpalten(); spalte++) {
-				if (dschungel.getFeld(zeile, spalte) == null) {
-					dschungel.setFeld(zeile, spalte);
-				}
-			}
+			dschungel.befuelleLeereFelder();
 		}
 	}
 	

@@ -2,6 +2,9 @@ package de.fernuni.kurs01584.ss23.modell;
 
 public class Nachbarschaftsstruktur {
 	private int[][] deltas;
+	private String typ;
+	private int distanz;
+	private int[] sprung;
 	
 	/***
 	 * Erzeugt eine Nachbarschaftsstruktur basierend auf dem Parameter Distanz,
@@ -10,6 +13,8 @@ public class Nachbarschaftsstruktur {
 	 * @param distanz
 	 */
 	public Nachbarschaftsstruktur(int distanz) {
+		typ = "Distanz";
+		this.distanz = distanz;
 		// distanz darf nur Werte groesser als 0 sein
 		if(distanz <= 0) {
 			throw new IllegalArgumentException(
@@ -40,6 +45,10 @@ public class Nachbarschaftsstruktur {
 	 * @param deltaY
 	 */
 	public Nachbarschaftsstruktur(int deltaX, int deltaY) {
+		typ = "Sprung";
+		this.sprung = new int[2];
+		sprung[0] = deltaX;
+		sprung[1] = deltaY;
 		// deltaX und deltaY duerfen nur Werte groesser als 0 sein
 		if(deltaX < 0 || deltaY < 0) {
 			throw new IllegalArgumentException(
@@ -107,5 +116,13 @@ public class Nachbarschaftsstruktur {
 	 */
 	public int[][] getDeltas() {
 		return deltas;
+	}
+	
+	public String toString() {
+		if(typ.equals("Distanz")) {
+			return (typ + "(" + distanz + ")");
+		} else {
+			return (typ + "(" + sprung[0] + "," + sprung[1] + ")");
+		}
 	}
 }

@@ -138,6 +138,18 @@ public class Dschungel {
 	 * @param zeile
 	 * @param spalte
 	 */
+	public void setFeld(String zeichen, int zeile, int spalte) throws IllegalArgumentException {
+		// Unvollstaendiges Feld, berechne dementsprechend die ID
+		String id = "F" + (zeile*spalten+spalte);
+		setFeld(id, zeichen, zeile, spalte, 1, 1);
+	}
+	
+	/***
+	 * Setzt das Feld an der angegebenen Position mit den Standardwerten 
+	 * 0 für Punkte und Verwendbarkeit in den Dschungel
+	 * @param zeile
+	 * @param spalte
+	 */
 	public void setFeld(int zeile, int spalte) throws IllegalArgumentException {
 		// Unvollstaendiges Feld, berechne dementsprechend die ID
 		String id = "F" + (zeile*spalten+spalte);
@@ -159,5 +171,26 @@ public class Dschungel {
 	 */
 	public void loescheFelder() {
 		felder = new Feld[zeilen][spalten];
+	}
+	
+	public void befuelleLeereFelder() {
+		for (int zeile = 0; zeile < zeilen; zeile++) {
+			for (int spalte = 0; spalte < spalten; spalte++) {
+				if (felder[zeile][spalte] == null) {
+					setFeld(zeile, spalte);
+				}
+			}
+		}
+	}
+	
+	public void befuelleRestlicheFelder() {
+		for (int zeile = 0; zeile < zeilen; zeile++) {
+			for (int spalte = 0; spalte < spalten; spalte++) {
+				if (felder[zeile][spalte] == null) {
+					int index = (int) (Math.random() * (zeichenmenge.length() - 1));
+					setFeld("" + zeichenmenge.charAt(index), zeile, spalte);
+				}
+			}
+		}
 	}
 }
