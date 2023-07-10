@@ -100,9 +100,9 @@ public class SchlangenSuche {
 	}
 	
 	private void removeSchlange(Schlange schlange, Feld startfeld) {
+		schlangen.remove(schlange);
 		erhoeheVerwendbarkeit(startfeld);
 		aktuellePunkte -= schlange.getSchlangenart().getPunkte() + startfeld.getPunkte();
-		schlangen.remove(schlange);
 	}
 	
 	private void addSchlangenglied(Schlange schlange, Schlangenglied schlangenglied, Feld feld) {
@@ -139,12 +139,10 @@ public class SchlangenSuche {
 		List<Feld> startfelder = new ArrayList<Feld>();
 		String zeichen = getEinzigartigeSchlangenartenAnfangszeichen();
 		for(int i = 0; i < zeichen.length(); i++) {
-			startfelder.addAll(dschungel.getFelderByZeichen("" + zeichen.charAt(i)));
-		}
-		for(int i = 0; i < startfelder.size(); i++) {
-			Feld feld = startfelder.get(i);
-			if(verwendbarkeiten[feld.getZeile()][feld.getSpalte()] <= 0) {
-				startfelder.remove(feld);
+			for(Feld feld : dschungel.getFelderByZeichen("" + zeichen.charAt(i))) {
+				if(verwendbarkeiten[feld.getZeile()][feld.getSpalte()] > 0) {
+					startfelder.add(feld);
+				}
 			}
 		}
 		return startfelder;

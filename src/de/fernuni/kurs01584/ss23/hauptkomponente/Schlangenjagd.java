@@ -5,8 +5,14 @@ import java.util.List;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 
 public class Schlangenjagd implements SchlangenjagdAPI {
-	private SchlangenjagdModell schlangenjagdModell;
 	// TODO: Implementierung von Schnittstelle und Programm-Einstieg
+	
+	public static void main(String[] args) {
+		System.out.println(args);
+		for(String str : args) {
+			System.out.println(str);
+		}
+	}
 
 	@Override
 	public boolean loeseProbleminstanz(String xmlEingabeDatei, String xmlAusgabeDatei) {

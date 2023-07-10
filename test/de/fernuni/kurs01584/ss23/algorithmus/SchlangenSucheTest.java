@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import de.fernuni.kurs01584.ss23.darstellung.Darstellung;
 import de.fernuni.kurs01584.ss23.modell.Schlange;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 import de.fernuni.kurs01584.ss23.dateiverarbeitung.DateiLeser;
@@ -15,7 +16,7 @@ class SchlangenSucheTest {
 
 	@Test
 	void testeSucheSchlangen() {
-		String file = "./res/sj_p1_probleminstanz.xml";
+		String file = "./res/sj_p15_probleminstanz.xml";
 		int schlangenAnzahl = 1;
 		try {
 			DateiLeser leser = new DateiLeser();
@@ -25,6 +26,15 @@ class SchlangenSucheTest {
 			SchlangenSuche schlangenSuche = new SchlangenSuche(schlangenjagdModell);
 			schlangenSuche.sucheSchlangen();
 			List<Schlange> schlangen = schlangenjagdModell.getSchlangen();
+			LoesungsPruefer pruefer = new LoesungsPruefer(schlangenjagdModell);
+			Darstellung darstellung = new Darstellung(schlangenjagdModell);
+			darstellung.print();
+			System.out.println("Fehler: ");
+			System.out.println("Glieder: " + pruefer.pruefeGlieder());
+			System.out.println("Verwendung: " + pruefer.pruefeVerwendung());
+			System.out.println("Nachbarschaft: " + pruefer.pruefeNachbarschaft());
+			System.out.println("Zuordnung: " + pruefer.pruefeZuordnung());
+			schlangenSuche.printLoesung();
 			assertEquals(schlangenAnzahl, schlangen.size(), 
 					() -> "Die gefundene Schlangenanzahl " + schlangen.size() + " entspricht nicht der Vorgabe "
 					+ schlangenAnzahl + ".");
