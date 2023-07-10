@@ -100,7 +100,7 @@ public class DschungelGenerator {
 				return;
 			}
 			removeSchlangenglied(schlange, schlangenglied, feld);
-		}	
+		}
 	}
 	
 	private boolean alleSchlangenPlatziert() {

@@ -15,13 +15,7 @@ public class DateiLeser {
 	}
 	
 	public Document lese(String fileName) throws JDOMException, IOException {
-		try {
-			Document document = builder.build(fileName);
-			return document;
-		} catch (IOException e) {
-			throw e;
-		} catch (JDOMException e) {
-			throw e;
-		}
+		Document document = builder.build(fileName);
+		return document;
 	}
 }

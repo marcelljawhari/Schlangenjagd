@@ -2,8 +2,8 @@
 <!DOCTYPE Schlangenjagd SYSTEM "schlangenjagd.dtd">
 <Schlangenjagd>
     <Zeit einheit="s">
-        <Vorgabe>60.0</Vorgabe>
-        <Abgabe>0.001205252</Abgabe>
+        <Vorgabe>60</Vorgabe>
+        <Abgabe>0.001</Abgabe>
     </Zeit>
     <Dschungel zeilen="2" spalten="4" zeichen="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
         <Feld id="F0" zeile="0" spalte="0" verwendbarkeit="1" punkte="1">F</Feld>
