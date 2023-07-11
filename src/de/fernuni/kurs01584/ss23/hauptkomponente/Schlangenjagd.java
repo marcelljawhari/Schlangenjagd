@@ -20,11 +20,7 @@ import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 
 public class Schlangenjagd implements SchlangenjagdAPI {
-	private static SchlangenjagdModell schlangenjagdModell;
-	// TODO: Implementierung von Schnittstelle und Programm-Einstieg
-	
-	// Argumente zB ablauf=ld eingabe=res\sj1.xml ausgabe=res\sj1_loesung.xml
-	// oder ablauf=dpb eingabe=res\sj1.xml
+	private static SchlangenjagdModell schlangenjagdModell;	
 	
 	private enum AblaufParameter {
 		l, e, p, b, d;
