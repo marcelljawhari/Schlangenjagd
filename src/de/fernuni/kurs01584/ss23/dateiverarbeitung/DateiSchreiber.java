@@ -10,9 +10,11 @@ import org.jdom2.JDOMException;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 
+import de.fernuni.kurs01584.ss23.modell.Nachbarschaftsstruktur;
 import de.fernuni.kurs01584.ss23.modell.Dschungel;
 import de.fernuni.kurs01584.ss23.modell.Feld;
 import de.fernuni.kurs01584.ss23.modell.Schlange;
+import de.fernuni.kurs01584.ss23.modell.Schlangenart;
 import de.fernuni.kurs01584.ss23.modell.Schlangenglied;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 import de.fernuni.kurs01584.ss23.modell.Zeiteinheit;
@@ -37,6 +39,8 @@ public class DateiSchreiber {
 	private void buildDocument(SchlangenjagdModell schlangenjagdModell, Document document) {
 		addZeit(schlangenjagdModell, document);
 		addDschungel(schlangenjagdModell, document);
+		addSchlangenarten(schlangenjagdModell, document);
+		removeSchlangen(document);
 		if(schlangenjagdModell.getSchlangen() != null) {
 			addSchlangen(schlangenjagdModell, document);
 		}
@@ -80,6 +84,32 @@ public class DateiSchreiber {
 		addFelder(dschungelElement, dschungel);
 	}
 	
+	private void addSchlangenarten(SchlangenjagdModell schlangenjagdModell, Document document) {
+		Schlangenart[] schlangenarten = schlangenjagdModell.getSchlangenarten();
+		Element root = document.getRootElement();
+		Element schlangenartenElement = root.getChild("Schlangenarten");
+		schlangenartenElement.removeChildren("Schlangenart");
+		for(Schlangenart schlangenart : schlangenarten) {
+			Element schlangenartElement = new Element("Schlangenart");
+			schlangenartElement.setAttribute("id", schlangenart.getId());
+			schlangenartElement.setAttribute("punkte", "" + schlangenart.getPunkte());
+			schlangenartElement.setAttribute("anzahl", "" + schlangenart.getAnzahl());
+			Element zeichenketteElement = new Element("Zeichenkette");
+			zeichenketteElement.setText(schlangenart.getZeichenkette());
+			schlangenartElement.addContent(zeichenketteElement);
+			Nachbarschaftsstruktur nachbarschaftsstruktur = schlangenart.getNachbarschaftsstruktur();
+			Element nachbarschaftsstrukturElement = new Element("Nachbarschaftsstruktur");
+			nachbarschaftsstrukturElement.setAttribute("typ", nachbarschaftsstruktur.getTyp());
+			for(int parameter : nachbarschaftsstruktur.getParameter()) {
+				Element parameterElement = new Element("Parameter");
+				parameterElement.setAttribute("wert", "" + parameter);
+				nachbarschaftsstrukturElement.addContent(parameterElement);
+			}
+			schlangenartElement.addContent(nachbarschaftsstrukturElement);
+			schlangenartenElement.addContent(schlangenartElement);
+		}
+	}
+	
 	private void addFelder(Element dschungelElement, Dschungel dschungel) {
 		Feld[][] felder = dschungel.getFelder();
 		dschungelElement.removeChildren("Feld");
@@ -97,29 +127,26 @@ public class DateiSchreiber {
 		}
 	}
 	
+	private void removeSchlangen(Document document) {
+		Element root = document.getRootElement();
+		root.removeChild("Schlangen");
+	}
+	
 	private void addSchlangen(SchlangenjagdModell schlangenjagdModell, Document document) {
 		List<Schlange> schlangen = schlangenjagdModell.getSchlangen();
 		Element root = document.getRootElement();
-		Element schlangenElement = root.getChild("Schlangen");
-		if(schlangenElement == null) {
-			schlangenElement = new Element("Schlangen");
-			root.addContent(schlangenElement);
-		}
-		schlangenElement.removeChildren("Schlange");
-		if(schlangen == null) {
-			root.removeChild("Schlangen");
-		} else {
-			for(Schlange schlange : schlangen) {
-				Element schlangeElement = new Element("Schlange");
-				String art = schlange.getSchlangenart().getId();
-				schlangeElement.setAttribute("art", art);
-				for(Schlangenglied schlangenglied : schlange.getSchlangenglieder()) {
-					Element schlangengliedElement = new Element("Schlangenglied");
-					schlangengliedElement.setAttribute("feld", schlangenglied.getFeld().getId());
-					schlangeElement.addContent(schlangengliedElement);
-				}
-				schlangenElement.addContent(schlangeElement);
+		Element schlangenElement = new Element("Schlangen");
+		for(Schlange schlange : schlangen) {
+			Element schlangeElement = new Element("Schlange");
+			String art = schlange.getSchlangenart().getId();
+			schlangeElement.setAttribute("art", art);
+			for(Schlangenglied schlangenglied : schlange.getSchlangenglieder()) {
+				Element schlangengliedElement = new Element("Schlangenglied");
+				schlangengliedElement.setAttribute("feld", schlangenglied.getFeld().getId());
+				schlangeElement.addContent(schlangengliedElement);
 			}
+			schlangenElement.addContent(schlangeElement);
 		}
+		root.addContent(schlangenElement);
 	}
 }

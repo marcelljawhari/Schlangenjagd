@@ -11,6 +11,7 @@ import de.fernuni.kurs01584.ss23.modell.Dschungel;
 import de.fernuni.kurs01584.ss23.modell.Feld;
 import de.fernuni.kurs01584.ss23.modell.Schlange;
 import de.fernuni.kurs01584.ss23.modell.Schlangenart;
+import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 import de.fernuni.kurs01584.ss23.modell.Zeiteinheit;
 
 public class XMLParser {
@@ -20,15 +21,39 @@ public class XMLParser {
 		this.document = document;
 	}
 	
-	public long parseVorgabeZeit() {
+	public SchlangenjagdModell parseSchlangenjagd() {
+		SchlangenjagdModell schlangenjagdModell;
+		Element root = document.getRootElement();
+		Dschungel dschungel = parseDschungel();
+		Schlangenart[] schlangenarten = parseSchlangenarten();
+		
+		long vorgabeZeit;
+		if(root.getChild("Zeit") != null) {
+			vorgabeZeit = parseVorgabeZeit();
+		} else {
+			vorgabeZeit = 60000;
+		}
+		
+		if(root.getChild("Schlangen") != null) {
+			List<Schlange> schlangen = parseSchlangen(schlangenarten, dschungel);
+			long abgabeZeit = parseAbgabeZeit();
+			schlangenjagdModell = new SchlangenjagdModell(dschungel, schlangenarten, schlangen, vorgabeZeit, abgabeZeit);
+		} else {
+			schlangenjagdModell = new SchlangenjagdModell(dschungel, schlangenarten, vorgabeZeit);
+		}
+		
+		return schlangenjagdModell;
+	}
+	
+	private long parseVorgabeZeit() {
 		return parseZeitInMs("Vorgabe");
 	}
 	
-	public long parseAbgabeZeit() {
+	private long parseAbgabeZeit() {
 		return parseZeitInMs("Abgabe");
 	}
 	
-	public Dschungel parseDschungel() {
+	private Dschungel parseDschungel() {
 		// Parse Dschungelparameter (Zeichenmenge, Zeilen, Spalten) aus XML
 		Element dschungelNode = document.getRootElement().getChild("Dschungel");
 		String zeichenmenge = dschungelNode.getAttributeValue("zeichen");
@@ -42,7 +67,7 @@ public class XMLParser {
 		return dschungel;
 	}
 	
-	public Schlangenart[] parseSchlangenarten() {
+	private Schlangenart[] parseSchlangenarten() {
 		Element schlangenartenNode = document.getRootElement().getChild("Schlangenarten");
 		List<Element> schlangenartNodes = schlangenartenNode.getChildren();
 		Schlangenart[] schlangenarten = new Schlangenart[schlangenartNodes.size()];
@@ -69,7 +94,7 @@ public class XMLParser {
 		return schlangenarten;
 	}
 	
-	public List<Schlange> parseSchlangen(Schlangenart[] schlangenarten, Dschungel dschungel) {
+	private List<Schlange> parseSchlangen(Schlangenart[] schlangenarten, Dschungel dschungel) {
 		List<Schlange> schlangen = new ArrayList<Schlange>();
 		Element schlangenNode = document.getRootElement().getChild("Schlangen");
 		for (Element schlangeNode : schlangenNode.getChildren()) {

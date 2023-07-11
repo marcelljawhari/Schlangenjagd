@@ -189,15 +189,4 @@ public class SchlangenSuche {
 	private long getVergangeneZeit() {
 		return (System.currentTimeMillis() - startZeit);
 	}
-	
-	public void printLoesung() {
-		LoesungsBewerter bewerter = new LoesungsBewerter();
-		System.out.println("Loesung:");
-		System.out.println("Punkte: " + bewerter.bewerte(schlangenjagdModell.getSchlangen()));
-		System.out.println("Abgabe: " + schlangenjagdModell.getAbgabeZeit() + "ms");
-		List<Schlange> schlangen = schlangenjagdModell.getSchlangen();
-		for(Schlange schlange : schlangen) {
-			System.out.println("Schlange: '" + schlange.getSchlangenart().getZeichenkette() + "'");
-		}
-	}
 }

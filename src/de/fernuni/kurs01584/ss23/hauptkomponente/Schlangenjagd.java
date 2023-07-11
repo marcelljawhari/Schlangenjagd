@@ -1,41 +1,258 @@
 package de.fernuni.kurs01584.ss23.hauptkomponente;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.concurrent.TimeoutException;
 
+import org.jdom2.JDOMException;
+
+import de.fernuni.kurs01584.ss23.algorithmus.DschungelGenerator;
+import de.fernuni.kurs01584.ss23.algorithmus.LoesungsBewerter;
+import de.fernuni.kurs01584.ss23.algorithmus.LoesungsPruefer;
+import de.fernuni.kurs01584.ss23.algorithmus.SchlangenSuche;
+import de.fernuni.kurs01584.ss23.darstellung.Darstellung;
+import de.fernuni.kurs01584.ss23.dateiverarbeitung.DateiLeser;
+import de.fernuni.kurs01584.ss23.dateiverarbeitung.DateiSchreiber;
+import de.fernuni.kurs01584.ss23.dateiverarbeitung.XMLParser;
+import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 
 public class Schlangenjagd implements SchlangenjagdAPI {
+	private static SchlangenjagdModell schlangenjagdModell;
 	// TODO: Implementierung von Schnittstelle und Programm-Einstieg
 	
-	public static void main(String[] args) {
-		System.out.println(args);
-		for(String str : args) {
-			System.out.println(str);
+	// Argumente zB ablauf=ld eingabe=res\sj1.xml ausgabe=res\sj1_loesung.xml
+	// oder ablauf=dpb eingabe=res\sj1.xml
+	
+	private enum AblaufParameter {
+		l, e, p, b, d;
+	}
+	
+	public static void main(String[] args) {		
+		// Parameter verifizieren
+		if(!verifiziereParameter(args)) {
+			return;
+		}
+		String ablauf = args[0].split("=")[1];
+		String eingabe = args[1].split("=")[1];
+		String ausgabe = "";
+		if(args.length == 3) {
+			ausgabe = args[2].split("=")[1];
+		}
+		
+		// Versuche Eingabedatei zu laden und gebe gegebenenfalls Fehler aus
+		if(!leseSchlangenjagdModell(eingabe)) {
+			return;
+		}
+		
+		// Verarbeite Ablaufparameter
+		for(int i = 0; i < ablauf.length(); i++) {
+			switch(AblaufParameter.valueOf("" + ablauf.charAt(i))) {
+				case l:
+					// Loesen
+					loese();
+					if(!schreibeSchlangenjagdModell(ausgabe)) {
+						return;
+					}
+					break;
+				case e:
+					// Erzeugen
+					try {
+						erzeuge();
+					} catch (TimeoutException e) {
+						System.out.println("Fehler: Der Dschungel konnte nicht in der vorgegebenen Zeit generiert werden.");
+						return;
+					} catch (IllegalArgumentException e) {
+						System.out.println("Fehler: Im Dschungel sind nicht genug Felder vorhanden um alle Schlangenarten" 
+								+ " mit der gewuenschten Anzahl zu platzieren.");
+						return;
+					}
+					if(!schreibeSchlangenjagdModell(ausgabe)) {
+						return;
+					}
+					break;
+				case p:
+					pruefe();
+					break;
+				case b:
+					bewerte();
+					break;
+				case d:
+					darstellen();
+					break;
+			}
 		}
 	}
+	
+	private static void loese() {
+		SchlangenSuche schlangenSuche = new SchlangenSuche(schlangenjagdModell);
+		schlangenSuche.sucheSchlangen();
+	}
+	
+	private static void erzeuge() throws TimeoutException {
+		DschungelGenerator dschungelGenerator = new DschungelGenerator(schlangenjagdModell);
+		dschungelGenerator.generiereDschungel();
+	}
+	
+	private static void pruefe() {
+		LoesungsPruefer loesungsPruefer = new LoesungsPruefer(schlangenjagdModell);
+		Map<Fehlertyp, Integer> fehler = loesungsPruefer.pruefe();
+		System.out.println("================Fehler==================");
+		System.out.println("Glieder: " + fehler.get(Fehlertyp.GLIEDER));
+		System.out.println("Zuordnung: " + fehler.get(Fehlertyp.ZUORDNUNG));
+		System.out.println("Verwendung: " + fehler.get(Fehlertyp.VERWENDUNG));
+		System.out.println("Nachbarschaft: " + fehler.get(Fehlertyp.NACHBARSCHAFT));
+		System.out.println();
+	}
+	
+	private static void bewerte() {
+		LoesungsBewerter loesungsBewerter = new LoesungsBewerter(schlangenjagdModell);
+		System.out.println("===============Bewertung================");
+		System.out.println("Punkte: " + loesungsBewerter.bewerte());
+		System.out.println();
+	}
+	
+	private static void darstellen() {
+		Darstellung darstellung = new Darstellung(schlangenjagdModell);
+		darstellung.print();
+		System.out.println();
+	}
+	
+	private static boolean schreibeSchlangenjagdModell(String file) {
+		try {
+			DateiSchreiber schreiber = new DateiSchreiber();
+			schreiber.schreibe(schlangenjagdModell, file);
+		} catch (IOException e) {
+			System.out.println("Fehler: Konnte die Ausgabedatei an dem gegebenen Pfad '" + file + "' nicht öffnen.");
+			return false;
+		} catch (JDOMException e) {
+			System.out.println("Fehler: Die Ausgabedatei entspricht nicht der angegebenen DTD");
+			return false;
+		}
+		return true;
+	}
+	
+	private static boolean leseSchlangenjagdModell(String file) {
+		try {
+			DateiLeser leser = new DateiLeser();
+			XMLParser parser = new XMLParser(leser.lese(file));
+			schlangenjagdModell = parser.parseSchlangenjagd();
+		} catch (IOException e) {
+			System.out.println("Fehler: Konnte die Eingabedatei an dem gegebenen Pfad '" + file + "' nicht öffnen.");
+			return false;
+		} catch (JDOMException e) {
+			System.out.println("Fehler: Die Eingabedatei entspricht nicht der angegebenen DTD");
+			return false;
+		}
+		return true;
+	}
+	
+	private static boolean verifiziereParameter(String[] args) {
+		if(args.length > 3) {
+			System.out.println("Fehler: Zu viele Parameter angegeben, es kann maximal 'ablauf', 'eingabe' und 'ausgabe' angegeben werden.");
+			return false;
+		} else if (args.length < 2) {
+			System.out.println("Fehler: Zu wenige Parameter angegeben, es muss mindestens 'ablauf' und 'eingabe' angegeben werden.");
+			return false;
+		}
+		String parameterName = args[0].split("=")[0];
+		if(!parameterName.equals("ablauf")) {
+			System.out.println("Fehler: Parameter 'ablauf' ist nicht an erster Stelle.");
+			return false;
+		}
+		parameterName = args[1].split("=")[0];
+		if(!parameterName.equals("eingabe")) {
+			System.out.println("Fehler: Parameter 'eingabe' ist nicht an zweiter Stelle.");
+			return false;
+		}
+		if(args.length == 3) {
+			parameterName = args[2].split("=")[0];
+			if(!parameterName.equals("ausgabe")) {
+				System.out.println("Fehler: Parameter 'ausgabe' ist nicht an dritter Stelle.");
+				return false;
+			}
+		}
+		String ablaufparameter = args[0].split("=")[1];
+		for(int i = 0; i < ablaufparameter.length(); i++) {
+			char zeichen = ablaufparameter.charAt(i);
+			if(zeichen != 'l' && zeichen != 'e' && zeichen != 'p' && zeichen != 'b' && zeichen != 'd') {
+				System.out.println("Fehler: Ablaufparameter '" + zeichen + "' unbekannt, es werden nur 'l', 'e', 'p', 'b' oder 'd' erkannt.");
+				return false;
+			}
+		}
+		for(int i = 0; i < ablaufparameter.length(); i++) {
+			char zeichen = ablaufparameter.charAt(i);
+			if(zeichen == 'l' || zeichen == 'e') {
+				if(args.length != 3) {
+					System.out.println("Fehler: Fuer die Ablaufparameter 'l' und 'e' muessen "
+							+ "die Parameter 'ablauf', 'eingabe' und 'ausgabe' angegeben werden.");
+					return false;
+				}
+			}
+		}
+		return true;
+	}
+	
+	
 
 	@Override
 	public boolean loeseProbleminstanz(String xmlEingabeDatei, String xmlAusgabeDatei) {
-		// TODO Implementierung der API-Methode zur Loesung von Probleminstanzen.
-		return false;
+		if(!leseSchlangenjagdModell(xmlEingabeDatei)) {
+			return false;
+		}
+		loese();
+		if(schlangenjagdModell.getSchlangen() == null) {
+			return false;
+		}
+		if(!schreibeSchlangenjagdModell(xmlEingabeDatei)) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public boolean erzeugeProbleminstanz(String xmlEingabeDatei, String xmlAusgabeDatei) {
-		// TODO Implementierung der API-Methode zur Erzeugung von Probleminstanzen.
-		return false;
+		if(!leseSchlangenjagdModell(xmlEingabeDatei)) {
+			return false;
+		}
+		try {
+			erzeuge();
+		} catch (TimeoutException e) {
+			System.out.println("Fehler: Der Dschungel konnte nicht in der vorgegebenen Zeit generiert werden.");
+			return false;
+		} catch (IllegalArgumentException e) {
+			System.out.println("Fehler: Im Dschungel sind nicht genug Felder vorhanden um alle Schlangenarten" 
+					+ " mit der gewuenschten Anzahl zu platzieren.");
+			return false;
+		}
+		if(!schreibeSchlangenjagdModell(xmlEingabeDatei)) {
+			return false;
+		}
+		return true;
 	}
 
 	@Override
 	public List<Fehlertyp> pruefeLoesung(String xmlEingabeDatei) {
-		// TODO Implementierung der API-Methode zur Pruefung von Loesungen.
-		return null;
+		List<Fehlertyp> fehlerListe = new ArrayList<Fehlertyp>();
+		if(!leseSchlangenjagdModell(xmlEingabeDatei)) {
+			return fehlerListe;
+		}
+		LoesungsPruefer loesungsPruefer = new LoesungsPruefer(schlangenjagdModell);
+		Map<Fehlertyp, Integer> fehlerMap = loesungsPruefer.pruefe();
+		for(Fehlertyp fehlerTyp : Fehlertyp.values()) {
+			if(fehlerMap.get(fehlerTyp) > 0) {
+				fehlerListe.add(fehlerTyp);
+			}
+		}
+		return fehlerListe;
 	}
 
 	@Override
 	public int bewerteLoesung(String xmlEingabeDatei) {
-		// TODO Implementierung der API-Methode zur Bewertung von Loesungen.
-		return 0;
+		LoesungsBewerter loesungsBewerter = new LoesungsBewerter(schlangenjagdModell);
+		return loesungsBewerter.bewerte();
 	}
 
 	@Override

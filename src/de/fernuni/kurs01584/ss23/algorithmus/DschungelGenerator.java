@@ -192,19 +192,6 @@ public class DschungelGenerator {
 	}
 	
 	private void speichereDschungel() {
-		System.out.println("Ausgabe felder:");
-		for(Feld[] zeile : felder) {
-			for(Feld feld : zeile) {
-				if(feld != null) {
-					System.out.print(feld.getZeichen());
-				} else {
-					System.out.print(" ");
-				}
-			}
-			System.out.println();
-		}
-		
-		
 		for(Feld[] zeile : felder) {
 			for(Feld feld : zeile) {
 				if(feld != null) {

@@ -14,8 +14,8 @@ public class Darstellung {
 	public void print() {
 		System.out.println("=====Darstellung der Probleminstanz=====");
 		printDschungelInformationen();
-		printSchlangenarten();
 		printDschungel();
+		printSchlangenarten();
 		printLoesung();
 	}
 	
