@@ -2,6 +2,7 @@ package de.fernuni.kurs01584.ss23.dateiverarbeitung;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.File;
 import java.util.List;
 
 import org.jdom2.Document;
@@ -9,6 +10,7 @@ import org.jdom2.Element;
 import org.jdom2.JDOMException;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
+import org.jdom2.DocType;
 
 import de.fernuni.kurs01584.ss23.modell.Nachbarschaftsstruktur;
 import de.fernuni.kurs01584.ss23.modell.Dschungel;
@@ -29,66 +31,89 @@ public class DateiSchreiber {
 		xmlOutputter = new XMLOutputter(Format.getPrettyFormat().setIndent("    "));
 	}
 	
-	public void schreibe(SchlangenjagdModell schlangenjagdModell, String fileName) throws JDOMException, IOException {
-		Document document = leser.lese(fileName);
+	public void schreibe(SchlangenjagdModell schlangenjagdModell, String fileName) throws IOException {
+		File file = new File(fileName);
+		file.createNewFile();
+		
+
+		Document document = new Document();
+		
 		fileWriter = new FileWriter(fileName);
 		buildDocument(schlangenjagdModell, document);
 		xmlOutputter.output(document, fileWriter);
 	}
 	
 	private void buildDocument(SchlangenjagdModell schlangenjagdModell, Document document) {
+		addDocType(document);
+		addRoot(document);
 		addZeit(schlangenjagdModell, document);
 		addDschungel(schlangenjagdModell, document);
 		addSchlangenarten(schlangenjagdModell, document);
-		removeSchlangen(document);
 		if(schlangenjagdModell.getSchlangen() != null) {
 			addSchlangen(schlangenjagdModell, document);
 		}
 	}
 	
+	private void addDocType(Document document) {
+		DocType docType = new DocType("Schlangenjagd", "schlangenjagd.dtd");
+		document.setDocType(docType);
+	}
+	
+	private void addRoot(Document document) {
+		Element schlangenjagd = new Element("Schlangenjagd");
+		document.setRootElement(schlangenjagd);
+	}
+	
 	private void addZeit(SchlangenjagdModell schlangenjagdModell, Document document) {
 		Element root = document.getRootElement();
-		Element zeitElement = root.getChild("Zeit");
-		Element vorgabeElement;
-		if(zeitElement == null) {
-			zeitElement = new Element("Zeit");
-			zeitElement.setAttribute("einheit", "s");
-			vorgabeElement = new Element("Vorgabe");
-			zeitElement.addContent(vorgabeElement);
-			root.addContent(0, zeitElement);
-		} else {
-			vorgabeElement = zeitElement.getChild("Vorgabe");
-		}
-		long divisor = Zeiteinheit.valueOf(zeitElement.getAttributeValue("einheit")).getMultiplicator();
+		Element zeitElement = new Element("Zeit");
+		zeitElement.setAttribute("einheit", "s");
+		Element vorgabeElement = new Element("Vorgabe");
+		zeitElement.addContent(vorgabeElement);
+		root.addContent(zeitElement);
+		
+		long divisor = Zeiteinheit.s.getMultiplicator();
 		vorgabeElement.setText("" + (schlangenjagdModell.getVorgabeZeit() / divisor));
 		if(schlangenjagdModell.getAbgabeZeit() > 0) {
-			Element abgabeElement = zeitElement.getChild("Abgabe");
-			if(abgabeElement == null) {
-				abgabeElement = new Element("Abgabe");
-				zeitElement.addContent(abgabeElement);
-			}
+			Element abgabeElement = new Element("Abgabe");
 			Double abgabeZeit = ((double)schlangenjagdModell.getAbgabeZeit()) / divisor;
 			abgabeElement.setText("" + abgabeZeit);
-		} else {
-			zeitElement.removeChild("Abgabe");
+			zeitElement.addContent(abgabeElement);
 		}
 	}
 	
 	private void addDschungel(SchlangenjagdModell schlangenjagdModell, Document document) {
 		Dschungel dschungel = schlangenjagdModell.getDschungel();
 		Element root = document.getRootElement();
-		Element dschungelElement = root.getChild("Dschungel");
+		
+		Element dschungelElement = new Element("Dschungel");
 		dschungelElement.setAttribute("zeilen", "" + dschungel.getZeilen());
 		dschungelElement.setAttribute("spalten", "" + dschungel.getSpalten());
 		dschungelElement.setAttribute("zeichen", dschungel.getZeichenmenge());
 		addFelder(dschungelElement, dschungel);
+		root.addContent(dschungelElement);
+	}
+	
+	private void addFelder(Element dschungelElement, Dschungel dschungel) {
+		Feld[][] felder = dschungel.getFelder();
+		for(Feld[] zeile : felder) {
+			for(Feld feld : zeile) {
+				Element feldElement = new Element("Feld");
+				feldElement.setText(feld.getZeichen());
+				feldElement.setAttribute("id", feld.getId());
+				feldElement.setAttribute("zeile", "" + feld.getZeile());
+				feldElement.setAttribute("spalte", "" + feld.getSpalte());
+				feldElement.setAttribute("verwendbarkeit", "" + feld.getVerwendbarkeit());
+				feldElement.setAttribute("punkte", "" + feld.getPunkte());
+				dschungelElement.addContent(feldElement);
+			}
+		}
 	}
 	
 	private void addSchlangenarten(SchlangenjagdModell schlangenjagdModell, Document document) {
 		Schlangenart[] schlangenarten = schlangenjagdModell.getSchlangenarten();
 		Element root = document.getRootElement();
-		Element schlangenartenElement = root.getChild("Schlangenarten");
-		schlangenartenElement.removeChildren("Schlangenart");
+		Element schlangenartenElement = new Element("Schlangenarten");
 		for(Schlangenart schlangenart : schlangenarten) {
 			Element schlangenartElement = new Element("Schlangenart");
 			schlangenartElement.setAttribute("id", schlangenart.getId());
@@ -108,28 +133,7 @@ public class DateiSchreiber {
 			schlangenartElement.addContent(nachbarschaftsstrukturElement);
 			schlangenartenElement.addContent(schlangenartElement);
 		}
-	}
-	
-	private void addFelder(Element dschungelElement, Dschungel dschungel) {
-		Feld[][] felder = dschungel.getFelder();
-		dschungelElement.removeChildren("Feld");
-		for(Feld[] zeile : felder) {
-			for(Feld feld : zeile) {
-				Element feldElement = new Element("Feld");
-				feldElement.setText(feld.getZeichen());
-				feldElement.setAttribute("id", feld.getId());
-				feldElement.setAttribute("zeile", "" + feld.getZeile());
-				feldElement.setAttribute("spalte", "" + feld.getSpalte());
-				feldElement.setAttribute("verwendbarkeit", "" + feld.getVerwendbarkeit());
-				feldElement.setAttribute("punkte", "" + feld.getPunkte());
-				dschungelElement.addContent(feldElement);
-			}
-		}
-	}
-	
-	private void removeSchlangen(Document document) {
-		Element root = document.getRootElement();
-		root.removeChild("Schlangen");
+		root.addContent(schlangenartenElement);
 	}
 	
 	private void addSchlangen(SchlangenjagdModell schlangenjagdModell, Document document) {

@@ -2,18 +2,17 @@
 <!DOCTYPE Schlangenjagd SYSTEM "schlangenjagd.dtd">
 <Schlangenjagd>
     <Zeit einheit="s">
-        <Vorgabe>5</Vorgabe>
-        <Abgabe>0.001</Abgabe>
+        <Vorgabe>60</Vorgabe>
     </Zeit>
     <Dschungel zeilen="2" spalten="4" zeichen="ABCDEFGHIJKLMNOPQRSTUVWXYZ">
-        <Feld id="F0" zeile="0" spalte="0" verwendbarkeit="1" punkte="1">D</Feld>
-        <Feld id="F1" zeile="0" spalte="1" verwendbarkeit="1" punkte="1">E</Feld>
-        <Feld id="F2" zeile="0" spalte="2" verwendbarkeit="1" punkte="1">R</Feld>
-        <Feld id="F3" zeile="0" spalte="3" verwendbarkeit="1" punkte="1">N</Feld>
-        <Feld id="F4" zeile="1" spalte="0" verwendbarkeit="1" punkte="1">X</Feld>
-        <Feld id="F5" zeile="1" spalte="1" verwendbarkeit="1" punkte="1">I</Feld>
-        <Feld id="F6" zeile="1" spalte="2" verwendbarkeit="1" punkte="1">N</Feld>
-        <Feld id="F7" zeile="1" spalte="3" verwendbarkeit="1" punkte="1">U</Feld>
+        <Feld id="F0" zeile="0" spalte="0" verwendbarkeit="0" punkte="0" />
+        <Feld id="F1" zeile="0" spalte="1" verwendbarkeit="0" punkte="0" />
+        <Feld id="F2" zeile="0" spalte="2" verwendbarkeit="0" punkte="0" />
+        <Feld id="F3" zeile="0" spalte="3" verwendbarkeit="0" punkte="0" />
+        <Feld id="F4" zeile="1" spalte="0" verwendbarkeit="0" punkte="0" />
+        <Feld id="F5" zeile="1" spalte="1" verwendbarkeit="0" punkte="0" />
+        <Feld id="F6" zeile="1" spalte="2" verwendbarkeit="0" punkte="0" />
+        <Feld id="F7" zeile="1" spalte="3" verwendbarkeit="0" punkte="0" />
     </Dschungel>
     <Schlangenarten>
         <Schlangenart id="A0" punkte="1" anzahl="1">

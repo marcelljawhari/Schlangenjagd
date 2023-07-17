@@ -16,7 +16,6 @@ import de.fernuni.kurs01584.ss23.darstellung.Darstellung;
 import de.fernuni.kurs01584.ss23.dateiverarbeitung.DateiLeser;
 import de.fernuni.kurs01584.ss23.dateiverarbeitung.DateiSchreiber;
 import de.fernuni.kurs01584.ss23.dateiverarbeitung.XMLParser;
-import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 
 public class Schlangenjagd implements SchlangenjagdAPI {
@@ -121,10 +120,7 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 			DateiSchreiber schreiber = new DateiSchreiber();
 			schreiber.schreibe(schlangenjagdModell, file);
 		} catch (IOException e) {
-			System.out.println("Fehler: Konnte die Ausgabedatei an dem gegebenen Pfad '" + file + "' nicht öffnen.");
-			return false;
-		} catch (JDOMException e) {
-			System.out.println("Fehler: Die Ausgabedatei entspricht nicht der angegebenen DTD");
+			System.out.println("Fehler: Konnte die Ausgabedatei an dem gegebenen Pfad '" + file + "' nicht schreiben.");
 			return false;
 		}
 		return true;

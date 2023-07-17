@@ -13,14 +13,11 @@ class DateiSchreiberTest {
 	@Test
 	void testeSchreibe() {
 		String inputFile = "./res/sj_p1_loesung.xml";
-		String outputFile = "./res/sj_t1_loesung.xml";
+		String outputFile = "./res/sj_test.xml";
 		try {
 			DateiLeser leser = new DateiLeser();
 			XMLParser parser = new XMLParser(leser.lese(inputFile));
-			Schlangenart[] schlangenarten = parser.parseSchlangenarten();
-			Dschungel dschungel = parser.parseDschungel();
-			SchlangenjagdModell schlangenjagdModell = new SchlangenjagdModell(dschungel
-					, schlangenarten, parser.parseSchlangen(schlangenarten, dschungel), parser.parseVorgabeZeit(), parser.parseAbgabeZeit());
+			SchlangenjagdModell schlangenjagdModell = parser.parseSchlangenjagd();
 			DateiSchreiber schreiber = new DateiSchreiber();
 			schreiber.schreibe(schlangenjagdModell, outputFile);
 			
