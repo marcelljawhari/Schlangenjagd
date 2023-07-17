@@ -14,14 +14,11 @@ class DarstellungTest {
 
 	@Test
 	void testeSucheSchlangen() {
-		String file = "./res/sj_p15_loesung.xml";
+		String file = "./res/sj_p5_probleminstanz.xml";
 		try {
 			DateiLeser leser = new DateiLeser();
 			XMLParser parser = new XMLParser(leser.lese(file));
-			Dschungel dschungel = parser.parseDschungel();
-			Schlangenart[] schlangenarten = parser.parseSchlangenarten();
-			SchlangenjagdModell schlangenjagdModell = new SchlangenjagdModell(dschungel,
-					schlangenarten, parser.parseSchlangen(schlangenarten, dschungel), parser.parseVorgabeZeit(), parser.parseAbgabeZeit());
+			SchlangenjagdModell schlangenjagdModell = parser.parseSchlangenjagd();
 			Darstellung darstellung = new Darstellung(schlangenjagdModell);
 			darstellung.print();
 		} catch (Exception e) {

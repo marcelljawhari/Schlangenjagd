@@ -35,9 +35,13 @@ public class XMLParser {
 		}
 		
 		if(root.getChild("Schlangen") != null) {
-			List<Schlange> schlangen = parseSchlangen(schlangenarten, dschungel);
-			long abgabeZeit = parseAbgabeZeit();
-			schlangenjagdModell = new SchlangenjagdModell(dschungel, schlangenarten, schlangen, vorgabeZeit, abgabeZeit);
+			if(root.getChild("Schlangen").getChildren().size() > 0) {
+				List<Schlange> schlangen = parseSchlangen(schlangenarten, dschungel);
+				long abgabeZeit = parseAbgabeZeit();
+				schlangenjagdModell = new SchlangenjagdModell(dschungel, schlangenarten, schlangen, vorgabeZeit, abgabeZeit);
+			} else {
+				schlangenjagdModell = new SchlangenjagdModell(dschungel, schlangenarten, vorgabeZeit);
+			}
 		} else {
 			schlangenjagdModell = new SchlangenjagdModell(dschungel, schlangenarten, vorgabeZeit);
 		}

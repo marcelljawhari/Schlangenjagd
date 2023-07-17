@@ -7,6 +7,9 @@ public class Nachbarschaftsstruktur {
 	private int distanz;
 	private int[] sprung;
 	
+	private final static String DISTANZ = "Distanz";
+	private final static String SPRUNG = "Sprung";
+	
 	/***
 	 * Erzeugt eine Nachbarschaftsstruktur basierend auf dem Parameter Distanz,
 	 * Distanz beschreibt hierbei alle Felder, welche waagrecht, senkrecht und diagonal
@@ -14,10 +17,9 @@ public class Nachbarschaftsstruktur {
 	 * @param distanz
 	 */
 	public Nachbarschaftsstruktur(int distanz) {
-		typ = "Distanz";
+		typ = DISTANZ;
 		parameter = new int[1];
 		parameter[0] = distanz;
-		this.distanz = distanz;
 		// distanz darf nur Werte groesser als 0 sein
 		if(distanz <= 0) {
 			throw new IllegalArgumentException(
@@ -48,7 +50,7 @@ public class Nachbarschaftsstruktur {
 	 * @param deltaY
 	 */
 	public Nachbarschaftsstruktur(int deltaX, int deltaY) {
-		typ = "Sprung";
+		typ = SPRUNG;
 		
 		parameter = new int[2];
 		parameter[0] = deltaX;
@@ -131,10 +133,10 @@ public class Nachbarschaftsstruktur {
 	}
 	
 	public String toString() {
-		if(typ.equals("Distanz")) {
-			return (typ + "(" + distanz + ")");
+		if(typ.equals(DISTANZ)) {
+			return (typ + "(" + parameter[0] + ")");
 		} else {
-			return (typ + "(" + sprung[0] + "," + sprung[1] + ")");
+			return (typ + "(" + parameter[0] + "," + parameter[1] + ")");
 		}
 	}
 }

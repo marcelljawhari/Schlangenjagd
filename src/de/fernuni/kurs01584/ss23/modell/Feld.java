@@ -1,18 +1,21 @@
 package de.fernuni.kurs01584.ss23.modell;
 
+/***
+ * Die Klasse 'Feld' ist Teil des Datenmodells und dient dazu die Felder des Dschungels zu repräsentieren.
+ */
 public class Feld {
-	private String id;
 	private int zeile, spalte, punkte, verwendbarkeit;
 	private String zeichen;
+	private String id;
 
 	/***
-	 * Erzeugt eine Instanz der Klasse 'Feld' mit den angegebenen Parametern
-	 * @param id
-	 * @param zeichen
-	 * @param zeile
-	 * @param spalte
-	 * @param punkte
-	 * @param verwendbarkeit
+	 * Erzeugt ein Feld.
+	 * @param id				ID des Feldes.
+	 * @param zeichen			Zeichen des Feldes.
+	 * @param zeile				Zeile des Feldes im Dschungel.
+	 * @param spalte			Spalte des Feldes im Dschungel.
+	 * @param punkte			Punkte die durch belegen des Feldes der Lösung gutgeschrieben werden.
+	 * @param verwendbarkeit	Wir oft das Feld belegt werden kann.
 	 */
 	public Feld(String id, String zeichen, int zeile, int spalte, int punkte, int verwendbarkeit) throws IllegalArgumentException {
 		if (zeile < 0 || spalte < 0) {
@@ -36,22 +39,22 @@ public class Feld {
 	}
 	
 	/***
-	 * Erzeugt eine Instanz der Klasse 'Feld' mit den angegebenen Parametern und 1 für Punkte und Verwendbarkeit
-	 * @param id
-	 * @param zeichen
-	 * @param zeile
-	 * @param spalte
+	 * Erzeugt ein Feld mit Standardwerten 1 Punkt und 1 Verwendbarkeit.
+	 * @param id				ID des Feldes.
+	 * @param zeichen			Zeichen des Feldes.
+	 * @param zeile				Zeile des Feldes im Dschungel.
+	 * @param spalte			Spalte des Feldes im Dschungel.
 	 */
 	public Feld(String id, String zeichen, int zeile, int spalte) throws IllegalArgumentException {
 		this(id, zeichen, zeile, spalte, 1, 1);
 	}
-	
+
 	/***
-	 * Erzeugt eine Instanz der Klasse 'Feld' an der angegebenen Position mit 0 für Punkte und Verwendbarkeit, 
-	 * zeichen bleibt hierbei null
-	 * @param id
-	 * @param zeile
-	 * @param spalte
+	 * Erzeugt ein leeres Feld. Da das Feld leer sein soll, wird ein Feld erzeugt 
+	 * mit dem leeren String als zeichen und jeweils 0 punkte und verwendbarkeit.
+	 * @param id				ID des Feldes.
+	 * @param zeile				Zeile des Feldes im Dschungel.
+	 * @param spalte			Spalte des Feldes im Dschungel.
 	 */
 	public Feld(String id, int zeile, int spalte) throws IllegalArgumentException {
 		this(id, "", zeile, spalte, 0, 0);
@@ -59,7 +62,7 @@ public class Feld {
 
 	/***
      * Gibt die Zeile an der das Feld innerhalb des Dschungels positioniert ist zurück.
-     * @return Zeile des Feldes
+     * @return Zeile des Feldes im Dschungel
      */
 	public int getZeile() {
 		return zeile;
@@ -67,15 +70,14 @@ public class Feld {
 
 	/***
      * Gibt die Spalte an der das Feld innerhalb des Dschungels positioniert ist zurück.
-     * @return Spalte des Feldes
+     * @return Spalte des Feldes im Dschungel
      */
 	public int getSpalte() {
 		return spalte;
 	}
 	
 	/***
-     * Gibt die Punkte zurück, die der Loesung angerechnet werden, wenn eine Schlange diesem Feld
-     * zugeordnet wird, dies ist immer ein nichtnegativer ganzzahliger Wert
+     * Gibt die Punkte zurück, die der Loesung gutgeschrieben werden, wenn eine Schlange diesem Feld zugeordnet wird.
      * @return Punkte des Feldes
      */
 	public int getPunkte() {

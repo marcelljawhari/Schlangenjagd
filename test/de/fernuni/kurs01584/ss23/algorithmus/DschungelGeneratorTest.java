@@ -19,20 +19,15 @@ class DschungelGeneratorTest {
 		try {
 			DateiLeser leser = new DateiLeser();
 			XMLParser parser = new XMLParser(leser.lese(file));
-			SchlangenjagdModell schlangenjagdModell = new SchlangenjagdModell(parser.parseDschungel()
-					, parser.parseSchlangenarten(), parser.parseVorgabeZeit());
+			SchlangenjagdModell schlangenjagdModell = parser.parseSchlangenjagd();
 			DschungelGenerator dschungelGenerator = new DschungelGenerator(schlangenjagdModell);
 			Darstellung darstellung = new Darstellung(schlangenjagdModell);
 			dschungelGenerator.generiereDschungel();
 			darstellung.print();
-			SchlangenSuche schlangenSuche = new SchlangenSuche(schlangenjagdModell);
-			schlangenSuche.sucheSchlangen();
-			schlangenSuche.printLoesung();
 		} catch (Exception e) {
 			e.printStackTrace();
 			fail("Unerwartete Exception " + e + " wurde ausgeloest.");
 		}
-		
 	}
 
 }

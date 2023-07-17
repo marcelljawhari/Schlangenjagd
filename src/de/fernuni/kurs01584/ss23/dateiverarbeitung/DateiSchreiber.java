@@ -7,7 +7,6 @@ import java.util.List;
 
 import org.jdom2.Document;
 import org.jdom2.Element;
-import org.jdom2.JDOMException;
 import org.jdom2.output.Format;
 import org.jdom2.output.XMLOutputter;
 import org.jdom2.DocType;
@@ -22,25 +21,23 @@ import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 import de.fernuni.kurs01584.ss23.modell.Zeiteinheit;
 
 public class DateiSchreiber {
-	private DateiLeser leser;
 	private FileWriter fileWriter;
 	private XMLOutputter xmlOutputter;
 	
 	public DateiSchreiber() {
-		leser = new DateiLeser();
-		xmlOutputter = new XMLOutputter(Format.getPrettyFormat().setIndent("    "));
+		String indent = "    ";
+		xmlOutputter = new XMLOutputter(Format.getPrettyFormat().setIndent(indent));
 	}
 	
 	public void schreibe(SchlangenjagdModell schlangenjagdModell, String fileName) throws IOException {
 		File file = new File(fileName);
 		file.createNewFile();
-		
-
+		fileWriter = new FileWriter(fileName);
 		Document document = new Document();
 		
-		fileWriter = new FileWriter(fileName);
 		buildDocument(schlangenjagdModell, document);
 		xmlOutputter.output(document, fileWriter);
+		fileWriter.close();
 	}
 	
 	private void buildDocument(SchlangenjagdModell schlangenjagdModell, Document document) {

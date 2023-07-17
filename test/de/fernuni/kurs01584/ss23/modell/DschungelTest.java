@@ -5,6 +5,16 @@ import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.Test;
 
 class DschungelTest {
+	
+	@Test
+	void testeKonstruktorKleinerGleichNullWerteSolltenExceptionAusloesen() {
+		int zeilen = 0;
+		int spalten = -4;
+		assertThrows(IllegalArgumentException.class, () -> new Dschungel("A", zeilen, 1),
+				() -> "Fuer den Zeilenwert '" + zeilen + "' wird keine Ausnahme erzeugt");
+		assertThrows(IllegalArgumentException.class, () -> new Dschungel("A", 1, spalten),
+				() -> "Fuer den (negativen) Spaltenwert '" + spalten + "' wird keine Ausnahme erzeugt");
+	}
 
 	@Test
 	void testeGetZeilenPositiv() {
@@ -23,11 +33,16 @@ class DschungelTest {
 	}
 	
 	@Test
-	void testeGetZeichenmengeAB() {
+	void testeGetZeichenmenge() {
 		String zeichenmenge = "AB";
 		Dschungel dschungel = new Dschungel(zeichenmenge, 1, 1);
 		assertEquals(dschungel.getZeichenmenge(), zeichenmenge, () -> "Die Zeichenmenge '" + dschungel.getZeichenmenge() 
 				+ "' entspricht nicht dem vorgegebenen Wert '" + zeichenmenge + "'.");
+	}
+	
+	@Test
+	void testeGetFelder() {
+		
 	}
 	
 	@Test
@@ -40,13 +55,52 @@ class DschungelTest {
 	}
 	
 	@Test
-	void testeKonstruktorKleinerGleichNullWerteSolltenExceptionAusloesen() {
-		int zeilen = 0;
-		int spalten = -4;
-		assertThrows(IllegalArgumentException.class, () -> new Dschungel("A", zeilen, 1),
-				() -> "Fuer den Zeilenwert '" + zeilen + "' wird keine Ausnahme erzeugt");
-		assertThrows(IllegalArgumentException.class, () -> new Dschungel("A", 1, spalten),
-				() -> "Fuer den (negativen) Spaltenwert '" + spalten + "' wird keine Ausnahme erzeugt");
+	void testeGetFeldById() {
+		
 	}
-
+	
+	@Test
+	void testeGetFelderByZeichen() {
+		
+	}
+	
+	@Test
+	void testeGetVerwendbarkeiten() {
+		
+	}
+	
+	@Test
+	void testeSetFeld() {
+		
+	}
+	
+	@Test
+	void testeSetFeldStandardFeld() {
+		
+	}
+	
+	@Test
+	void testeSetFeldLeeresFeld() {
+		
+	}
+	
+	@Test
+	void testeSetFeldVorhandenesFeld() {
+		
+	}
+	
+	@Test
+	void testeLoescheFelder() {
+		
+	}
+	
+	@Test
+	void testeBefuelleLeereFelder() {
+		
+	}
+	
+	@Test
+	void testeBefuelleRestlicheFelder() {
+		
+	}
 }

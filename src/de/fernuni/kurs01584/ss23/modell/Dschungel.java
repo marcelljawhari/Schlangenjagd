@@ -10,10 +10,10 @@ public class Dschungel {
 	private Feld[][] felder;
 	
 	/***
-	 * Erzeugt eine Instanz der Klasse 'Dschungel' mit den angegebenen Parametern
-	 * @param zeichenmenge
-	 * @param zeilen
-	 * @param spalten
+	 * Erzeugt einen Dschungel.
+	 * @param zeichenmenge	Zeichen die im Dschungel vorkommen neben den Zeichen der Schlangenarten.
+	 * @param zeilen		Zeilen die der Dschungel umfassen soll.
+	 * @param spalten		Spalten die der Dschungel umfassen soll.
 	 */
 	public Dschungel(String zeichenmenge, int zeilen, int spalten) throws IllegalArgumentException {
 		if(zeilen <= 0 || spalten <= 0) {
@@ -27,32 +27,32 @@ public class Dschungel {
 	}
 	
 	/***
-	 * Gibt die Zeilen, die der Dschungel umfässt zurück
-	 * @return Zeilen des Dschungels
+	 * Gibt die Zeilen, die der Dschungel umfässt zurück.
+	 * @return Zeilen des Dschungels.
 	 */
 	public int getZeilen() {
 		return zeilen;
 	}
 
 	/***
-	 * Gibt die Spalten, die der Dschungel umfässt zurück
-	 * @return Spalten des Dschungels
+	 * Gibt die Spalten, die der Dschungel umfässt zurück.
+	 * @return Spalten des Dschungels.
 	 */
 	public int getSpalten() {
 		return spalten;
 	}
 	
 	/***
-	 * Gibt die Zeichenmenge, welche der Dschungel zulässt zurück
-	 * @return Zeichenmenge des Dschungels
+	 * Gibt die Zeichenmenge, welche der Dschungel, neben den Zeichen der Schlangenarten, zulässt zurück.
+	 * @return Zeichenmenge des Dschungels.
 	 */
 	public String getZeichenmenge() {
 		return zeichenmenge;
 	}
 	
 	/***
-	 * Gibt alle Felder des Dschungels als zweidimensionales Array zurück
-	 * @return Felder des Dschungels
+	 * Gibt alle Felder des Dschungels als zweidimensionales Array zurück.
+	 * @return Zweidimensionales Felder-Array des Dschungels.
 	 */
 	public Feld[][] getFelder() {
 		return felder;
@@ -60,18 +60,18 @@ public class Dschungel {
 	
 	/***
 	 * Gibt das Feld an der angegebenen Position im Dschungel zurück
-	 * @param zeile
-	 * @param spalte
-	 * @return Feld an angegebener Position
+	 * @param zeile		Zeile des Feldes im Dschungel.
+	 * @param spalte	Spalte des Feldes im Dschungel.
+	 * @return Feld an angegebener Position.		
 	 */
 	public Feld getFeld(int zeile, int spalte) {
 		return felder[zeile][spalte];
 	}
 	
 	/***
-	 * Gibt das Feld mit der gegebenen ID zurück
-	 * @param id
-	 * @return Feld mit gegebener ID
+	 * Gibt das Feld mit der gegebenen ID zurück.
+	 * @param id ID des gesuchten Feldes.
+	 * @return Feld mit gegebener ID.
 	 */
 	public Feld getFeldById(String id) {
 		for (Feld[] zeile : felder) {
@@ -83,7 +83,12 @@ public class Dschungel {
 		}
 		return null;
 	}
-	
+
+	/***
+	 * Gibt alle Felder zurück, welche das angegebene Zeichen enthalten.
+	 * @param zeichen	Zeichen der gesuchten Felder.
+	 * @return Eine Liste von Feldern, welche das angegebene Zeichen enthalten.
+	 */
 	public List<Feld> getFelderByZeichen(String zeichen) {
 		List<Feld> felderByZeichen = new ArrayList<Feld>();
 		for (Feld[] zeile : felder) {
@@ -96,6 +101,10 @@ public class Dschungel {
 		return felderByZeichen;
 	}
 	
+	/***
+	 * Gibt die Verwendbarkeiten aller Felder als zweidimensionales Integer-Array zurück.
+	 * @return Zweidimensionales Integer-Array der Verwendbarkeiten aller Felder.
+	 */
 	public int[][] getVerwendbarkeiten() {
 		int[][] verwendbarkeiten = new int[zeilen][spalten];
 		for(int zeile = 0; zeile < zeilen; zeile++) {
@@ -107,13 +116,13 @@ public class Dschungel {
 	}
 	
 	/***
-	 * Setzt das Feld an der angegebenen Position mit den entsprechenden Parametern in den Dschungel
-	 * @param id
-	 * @param zeichen
-	 * @param zeile
-	 * @param spalte
-	 * @param punkte
-	 * @param verwendbarkeit
+	 * Erzeugt ein Feld und setzt es anschließend in den Dschungel.
+	 * @param id				ID des Feldes.
+	 * @param zeichen			Zeichen des Feldes.
+	 * @param zeile				Zeile des Feldes im Dschungel.
+	 * @param spalte			Spalte des Feldes im Dschungel.
+	 * @param punkte			Punkte die durch belegen des Feldes der Lösung gutgeschrieben werden.
+	 * @param verwendbarkeit	Wir oft das Feld belegt werden kann.
 	 */
 	public void setFeld(String id, String zeichen, int zeile, int spalte, int punkte, int verwendbarkeit) throws IllegalArgumentException {
 		felder[zeile][spalte] = new Feld(id, zeichen, zeile, spalte, punkte, verwendbarkeit);
@@ -121,34 +130,33 @@ public class Dschungel {
 	}
 	
 	/***
-	 * Setzt das Feld an der angegebenen Position mit den entsprechenden Parametern und den
-	 * Standardwerten 1 für Punkte und Verwendbarkeit in den Dschungel
-	 * @param id
-	 * @param zeichen
-	 * @param zeile
-	 * @param spalte
+	 * Erzeugt ein Feld, mit den Standardwerten 1 Punkt und 1 Verwendbarkeit, 
+	 * und setzt es anschließend in den Dschungel.
+	 * @param id		ID des Feldes.
+	 * @param zeichen	Zeichen des Feldes.
+	 * @param zeile		Zeile des Feldes im Dschungel.
+	 * @param spalte	Spalte des Feldes im Dschungel.
 	 */
 	public void setFeld(String id, String zeichen, int zeile, int spalte) throws IllegalArgumentException {
-		setFeld(id, zeichen, zeile, spalte, 1, 1);
+		setFeld(id, zeichen, zeile, spalte);
 	}
 	
 	/***
-	 * Setzt das Feld an der angegebenen Position mit den Standardwerten 
-	 * 0 für Punkte und Verwendbarkeit in den Dschungel
-	 * @param zeile
-	 * @param spalte
+	 * Erzeugt ein Feld, mit Standardwerten 1 Punkt und 1 Verwendbarkeit 
+	 * und platziert es im Dschungel. Berechnet außerdem die ID.
+	 * @param zeile		Zeile des Feldes im Dschungel.
+	 * @param spalte	Spalte des Feldes im Dschungel.
 	 */
 	public void setFeld(String zeichen, int zeile, int spalte) throws IllegalArgumentException {
-		// Unvollstaendiges Feld, berechne dementsprechend die ID
+		// Unvollstaendiges Feld, berechne die ID
 		String id = "F" + (zeile*spalten+spalte);
-		setFeld(id, zeichen, zeile, spalte, 1, 1);
+		setFeld(id, zeichen, zeile, spalte);
 	}
 	
 	/***
-	 * Setzt das Feld an der angegebenen Position mit den Standardwerten 
-	 * 0 für Punkte und Verwendbarkeit in den Dschungel
-	 * @param zeile
-	 * @param spalte
+	 * Erzeugt ein leeres Feld, berechnet die ID und platziert es im Dschungel.
+	 * @param zeile		Zeile des Feldes im Dschungel.
+	 * @param spalte	Spalte des Feldes im Dschungel.
 	 */
 	public void setFeld(int zeile, int spalte) throws IllegalArgumentException {
 		// Unvollstaendiges Feld, berechne dementsprechend die ID
@@ -157,22 +165,25 @@ public class Dschungel {
 	}
 	
 	/***
-	 * Setzt ein bereits vordefiniertes Feld an die angegebene Position im Dschungel
-	 * @param feld
-	 * @param zeile
-	 * @param spalte
+	 * Platziert ein bereits vorhandenes Feld im Dschungel.
+	 * @param feld		Feld welches platziert werden soll.
+	 * @param zeile		Zeile des Feldes im Dschungel.
+	 * @param spalte	Spalte des Feldes im Dschungel.
 	 */
 	public void setFeld(Feld feld) {
 		felder[feld.getZeile()][feld.getSpalte()] = feld;
 	}
 	
 	/***
-	 * Setzt die Felder des Dschungel zurück
+	 * Loescht alle im Dschungel platzierten Felder.
 	 */
 	public void loescheFelder() {
 		felder = new Feld[zeilen][spalten];
 	}
 	
+	/***
+	 * Befuellt alle Felder, die im Dschungel noch nicht platziert wurden, mit leeren Feldern.
+	 */
 	public void befuelleLeereFelder() {
 		for (int zeile = 0; zeile < zeilen; zeile++) {
 			for (int spalte = 0; spalte < spalten; spalte++) {
@@ -183,6 +194,10 @@ public class Dschungel {
 		}
 	}
 	
+	/***
+	 * Befuellt alle Felder, die im Dschungel noch nicht platziert wurden, mit neuen Feldern.
+	 * Hierbei wird das Zeichen zufaellig aus der Zeichenmenge gewaehlt, 1 Punkt und 1 Verwendbarkeit zugeteilt. 
+	 */
 	public void befuelleRestlicheFelder() {
 		for (int zeile = 0; zeile < zeilen; zeile++) {
 			for (int spalte = 0; spalte < spalten; spalte++) {
