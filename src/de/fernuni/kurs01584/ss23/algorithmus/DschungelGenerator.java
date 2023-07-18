@@ -1,6 +1,7 @@
 package de.fernuni.kurs01584.ss23.algorithmus;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeoutException;
 
@@ -9,7 +10,6 @@ import de.fernuni.kurs01584.ss23.modell.*;
 public class DschungelGenerator {
 	private SchlangenjagdModell schlangenjagdModell;
 	private Dschungel dschungel;
-	private String zeichenmenge;
 	private int zeilen, spalten;
 	private Schlangenart[] schlangenarten;
 	private List<Schlange> schlangen;
@@ -23,7 +23,6 @@ public class DschungelGenerator {
 	
 	public void generiereDschungel() throws IllegalArgumentException, TimeoutException {
 		dschungel = schlangenjagdModell.getDschungel();
-		zeichenmenge = dschungel.getZeichenmenge();
 		zeilen = dschungel.getZeilen();
 		spalten = dschungel.getSpalten();
 		schlangenarten = schlangenjagdModell.getSchlangenarten();
@@ -38,6 +37,20 @@ public class DschungelGenerator {
 		}
 		platziereSchlangen();
 		dschungel.befuelleRestlicheFelder();
+		System.out.println("Benoetigte Zeit: " + getVergangeneZeit());
+		printSchlangen();
+	}
+	
+	private void printSchlangen() {
+		int i = 1;
+		for(Schlange schlange : schlangen) {
+			System.out.print(i + ". Schlange " + schlange.getSchlangenart().getId() + ", Glieder an: ");
+			for(Schlangenglied schlangenglied : schlange.getSchlangenglieder()) {
+				System.out.print("(" + schlangenglied.getFeld().getZeile() + "," + schlangenglied.getFeld().getSpalte() + ")");
+			}
+			System.out.println();
+			i++;
+		}
 	}
 	
 	private void platziereSchlangen() throws TimeoutException {
@@ -51,9 +64,9 @@ public class DschungelGenerator {
 		if(alleSchlangenPlatziert()) {
 			return;
 		}
-		if(vorgabeZeitErreicht()) {
-			throw new TimeoutException("Der Dschungel konnte nicht in der vorgegebenen Zeit erstellt werden.");
-		}
+//		if(vorgabeZeitErreicht()) {
+//			throw new TimeoutException("Der Dschungel konnte nicht in der vorgegebenen Zeit erstellt werden.");
+//		}
 		List<int[]> verfuegbareKoordinaten = getVerfuegbareKoordinaten();
 		for(int[] koordinaten : verfuegbareKoordinaten) {
 			List<Schlangenart> verbleibendeSchlangenarten = getVerbleibendeSchlangenarten();
@@ -82,9 +95,9 @@ public class DschungelGenerator {
 			platziereSchlange();
 			return;
 		}
-		if(vorgabeZeitErreicht()) {
-			throw new TimeoutException("Der Dschungel konnte nicht in der vorgegebenen Zeit erstellt werden.");
-		}
+//		if(vorgabeZeitErreicht()) {
+//			throw new TimeoutException("Der Dschungel konnte nicht in der vorgegebenen Zeit erstellt werden.");
+//		}
 		int index = vorherigesSchlangenglied.getIndex() + 1;
 		List<int[]> verfuegbareKoordinaten = getVerfuegbareKoordinaten(vorherigesSchlangenglied, 
 				schlange.getSchlangenart().getNachbarschaftsstruktur());
@@ -120,7 +133,8 @@ public class DschungelGenerator {
 	
 	private Feld erzeugeFeld(String zeichen, int zeile, int spalte) {
 		String feldId = "F" + (zeile * spalten + spalte);
-		return new Feld(feldId, zeichen, zeile, spalte, 1, 1);
+		Feld feld = new Feld(feldId, zeichen, zeile, spalte, 1, 1);
+		return feld;
 	}
 	
 	private void addSchlange(Schlange schlange, Schlangenglied schlangenkopf, Feld startfeld) {
@@ -170,6 +184,7 @@ public class DschungelGenerator {
 				}
 			}
 		}
+		Collections.shuffle(verfuegbareKoordinaten);
 		return verfuegbareKoordinaten;
 	}
 	
@@ -188,6 +203,7 @@ public class DschungelGenerator {
 				}
 			}
 		}
+		Collections.shuffle(verfuegbareKoordinaten);
 		return verfuegbareKoordinaten;
 	}
 	
