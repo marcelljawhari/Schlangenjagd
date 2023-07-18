@@ -13,13 +13,13 @@ class FeldTest {
 		String zeichen = "a";
 		int negativerWert = -1;
 		assertThrows(IllegalArgumentException.class, () -> new Feld(id, zeichen, negativerWert, 0, 0, 0),
-				() -> "Fuer den (negativen) Zeilenwert '" + negativerWert + "' wird keine Ausnahme erzeugt.");
+				"Fuer den (negativen) Zeilenwert '" + negativerWert + "' wird keine Ausnahme erzeugt.");
 		assertThrows(IllegalArgumentException.class, () -> new Feld(id, zeichen, 0, negativerWert, 0, 0),
-				() -> "Fuer den (negativen) Spaltenwert '" + negativerWert + "' wird keine Ausnahme erzeugt.");
+				"Fuer den (negativen) Spaltenwert '" + negativerWert + "' wird keine Ausnahme erzeugt.");
 		assertThrows(IllegalArgumentException.class, () -> new Feld(id, zeichen, 0, 0, negativerWert, 0),
-				() -> "Fuer den (negativen) Punktwert '" + negativerWert + "' wird keine Ausnahme erzeugt.");
+				"Fuer den (negativen) Punktwert '" + negativerWert + "' wird keine Ausnahme erzeugt.");
 		assertThrows(IllegalArgumentException.class, () -> new Feld(id, zeichen, 0, 0, 0, negativerWert),
-				() -> "Fuer die (negative) Verwendbarkeit '" + negativerWert + "' wird keine Ausnahme erzeugt.");
+				"Fuer die (negative) Verwendbarkeit '" + negativerWert + "' wird keine Ausnahme erzeugt.");
 	}
 	
 	@Test
@@ -30,9 +30,9 @@ class FeldTest {
 		int spalte = 0;
 		
 		Feld feld = new Feld(id, zeichen, zeile, spalte);
-		assertEquals(feld.getPunkte(), 1, () -> "Der Punktewert '" + feld.getPunkte() 
+		assertEquals(1, feld.getPunkte(), "Der Punktewert '" + feld.getPunkte() 
 		+ "' entspricht nicht dem Standardwert '1'.");
-		assertEquals(feld.getVerwendbarkeit(), 1, () -> "Die Verwendbarkeit '" + feld.getVerwendbarkeit() 
+		assertEquals(1, feld.getVerwendbarkeit(), "Die Verwendbarkeit '" + feld.getVerwendbarkeit() 
 		+ "' entspricht nicht dem Standardwert '1'.");
 	}
 	
@@ -43,9 +43,9 @@ class FeldTest {
 		int spalte = 0;
 		
 		Feld feld = new Feld(id, zeile, spalte);
-		assertEquals(feld.getPunkte(), 0, () -> "Der Punktewert '" + feld.getPunkte() 
+		assertEquals(0, feld.getPunkte(), "Der Punktewert '" + feld.getPunkte() 
 		+ "' entspricht nicht dem Standardwert '0'.");
-		assertEquals(feld.getVerwendbarkeit(), 0, () -> "Die Verwendbarkeit '" + feld.getVerwendbarkeit() 
+		assertEquals(0, feld.getVerwendbarkeit(), "Die Verwendbarkeit '" + feld.getVerwendbarkeit() 
 		+ "' entspricht nicht dem Standardwert '0'.");
 	}
 	
@@ -55,7 +55,7 @@ class FeldTest {
 		String zeichen = "a";
 		int zeile = 2;
 		Feld feld = new Feld(id, zeichen, zeile, 0, 0, 0);
-		assertEquals(feld.getZeile(), zeile, () -> "Der Zeilenwert '" + feld.getZeile() 
+		assertEquals(zeile, feld.getZeile(), "Der Zeilenwert '" + feld.getZeile() 
 				+ "' entspricht nicht dem vorgegebenen Wert '" + zeile + "'.");
 	}
 	
@@ -65,7 +65,7 @@ class FeldTest {
 		String zeichen = "a";
 		int spalte = 4;
 		Feld feld = new Feld(id, zeichen, 0, spalte, 0, 0);
-		assertEquals(feld.getSpalte(), spalte, () -> "Der Spaltenwert '" + feld.getSpalte() 
+		assertEquals(spalte, feld.getSpalte(), "Der Spaltenwert '" + feld.getSpalte() 
 				+ "' entspricht nicht dem vorgegebenen Wert '" + spalte + "'.");
 	}
 	
@@ -75,7 +75,7 @@ class FeldTest {
 		String zeichen = "a";
 		int punkte = 6;
 		Feld feld = new Feld(id, zeichen, 0, 0, punkte, 0);
-		assertEquals(feld.getPunkte(), punkte, () -> "Der Punktwert '" + feld.getPunkte() 
+		assertEquals(punkte, feld.getPunkte(), "Der Punktwert '" + feld.getPunkte() 
 				+ "' entspricht nicht dem vorgegebenen Wert '" + punkte + "'.");
 	}
 	
@@ -85,7 +85,7 @@ class FeldTest {
 		String zeichen = "a";
 		int verwendbarkeit = 8;
 		Feld feld = new Feld(id, zeichen, 0, 0, 0, verwendbarkeit);
-		assertEquals(feld.getVerwendbarkeit(), verwendbarkeit, () -> "Die Verwendbarkeit '" + feld.getVerwendbarkeit() 
+		assertEquals(verwendbarkeit, feld.getVerwendbarkeit(), "Die Verwendbarkeit '" + feld.getVerwendbarkeit() 
 				+ "' entspricht nicht dem vorgegebenen Wert '" + verwendbarkeit + "'.");
 	}
 
@@ -94,7 +94,7 @@ class FeldTest {
 		String id = "F0";
 		String zeichen = "A";
 		Feld feld = new Feld(id, zeichen, 0, 0, 0, 0);
-		assertEquals(feld.getZeichen(), zeichen, () -> "Der Zeilenwert '" + feld.getZeichen() 
+		assertEquals(zeichen, feld.getZeichen(), "Der Zeilenwert '" + feld.getZeichen() 
 				+ "' entspricht nicht dem vorgegebenen Wert '" + zeichen + "'.");
 	}
 	
@@ -103,7 +103,7 @@ class FeldTest {
 		String id = "F0";
 		String zeichen = "⛹";
 		Feld feld = new Feld(id, zeichen, 0, 0, 0, 0);
-		assertEquals(feld.getZeichen(), zeichen, () -> "Der Zeilenwert '" + feld.getZeichen() 
+		assertEquals(zeichen, feld.getZeichen(), "Der Zeilenwert '" + feld.getZeichen() 
 				+ "' entspricht nicht dem vorgegebenen Wert '" + zeichen + "'.");
 	}
 	
@@ -111,7 +111,7 @@ class FeldTest {
 	void testeGetId() {
 		String id = "F0";
 		Feld feld = new Feld(id, "a", 0, 0, 0, 0);
-		assertEquals(feld.getId(), id, () -> "Der Zeilenwert '" + feld.getId() 
+		assertEquals(id, feld.getId(), "Der Zeilenwert '" + feld.getId() 
 				+ "' entspricht nicht dem vorgegebenen Wert '" + id + "'.");
 	}
 	

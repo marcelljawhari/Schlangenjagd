@@ -102,8 +102,8 @@ public class Dschungel {
 	}
 	
 	/***
-	 * Gibt die Verwendbarkeiten aller Felder als zweidimensionales Integer-Array zurück.
-	 * @return Zweidimensionales Integer-Array der Verwendbarkeiten aller Felder.
+	 * Gibt die Verwendbarkeiten aller Felder als zweidimensionales int-Array zurück.
+	 * @return Zweidimensionales int-Array der Verwendbarkeiten aller Felder.
 	 */
 	public int[][] getVerwendbarkeiten() {
 		int[][] verwendbarkeiten = new int[zeilen][spalten];
@@ -138,7 +138,7 @@ public class Dschungel {
 	 * @param spalte	Spalte des Feldes im Dschungel.
 	 */
 	public void setFeld(String id, String zeichen, int zeile, int spalte) throws IllegalArgumentException {
-		setFeld(id, zeichen, zeile, spalte);
+		setFeld(id, zeichen, zeile, spalte, 1, 1);
 	}
 	
 	/***
@@ -150,7 +150,7 @@ public class Dschungel {
 	public void setFeld(String zeichen, int zeile, int spalte) throws IllegalArgumentException {
 		// Unvollstaendiges Feld, berechne die ID
 		String id = "F" + (zeile*spalten+spalte);
-		setFeld(id, zeichen, zeile, spalte);
+		setFeld(id, zeichen, zeile, spalte, 1, 1);
 	}
 	
 	/***
@@ -202,8 +202,8 @@ public class Dschungel {
 		for (int zeile = 0; zeile < zeilen; zeile++) {
 			for (int spalte = 0; spalte < spalten; spalte++) {
 				if (felder[zeile][spalte] == null) {
-					int index = (int) (Math.random() * (zeichenmenge.length() - 1));
-					setFeld("" + zeichenmenge.charAt(index), zeile, spalte);
+					String zeichen = "" + zeichenmenge.charAt((int) (Math.random() * zeichenmenge.length()));
+					setFeld("" + zeichen, zeile, spalte);
 				}
 			}
 		}

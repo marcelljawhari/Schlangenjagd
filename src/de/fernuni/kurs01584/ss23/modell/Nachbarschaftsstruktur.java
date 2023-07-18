@@ -4,23 +4,19 @@ public class Nachbarschaftsstruktur {
 	private int[][] deltas;
 	private String typ;
 	private int[] parameter;
-	private int distanz;
-	private int[] sprung;
 	
 	private final static String DISTANZ = "Distanz";
 	private final static String SPRUNG = "Sprung";
 	
 	/***
-	 * Erzeugt eine Nachbarschaftsstruktur basierend auf dem Parameter Distanz,
-	 * Distanz beschreibt hierbei alle Felder, welche waagrecht, senkrecht und diagonal
-	 * innerhalb der Distanz sind (ein Feld selber ist nicht in seiner eigenen Nachbarschaft)
-	 * @param distanz
+	 * Erzeugt eine Nachbarschaftsstruktur des Typs Distanz(x).
+	 * @param distanz Distanz ist der maximale Abstand den ein Feld waagrecht, senkrecht oder diagonal zu seinen Nachbar haben kann.
 	 */
 	public Nachbarschaftsstruktur(int distanz) {
 		typ = DISTANZ;
 		parameter = new int[1];
 		parameter[0] = distanz;
-		// distanz darf nur Werte groesser als 0 sein
+		// distanz darf nur Werte groesser als 0 annehmen
 		if(distanz <= 0) {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Nachbarschaftsstruktur' darf der Parameter 'distanz' keine "
@@ -44,10 +40,9 @@ public class Nachbarschaftsstruktur {
 	}
 
 	/***
-	 * Erzeugt eine Nachbarschaftsstruktur basierend auf Spruengen, 
-	 * welche aus deltaX und deltaY kombiniert werden koennen
-	 * @param deltaX
-	 * @param deltaY
+	 * Erzeugt eine Nachbarschaftsstruktur von Typ Sprung(x,y).
+	 * @param deltaX Der erste Delta Wert des Sprunges.
+	 * @param deltaY Der zweite Delta Wert des Sprunges.
 	 */
 	public Nachbarschaftsstruktur(int deltaX, int deltaY) {
 		typ = SPRUNG;
@@ -55,7 +50,7 @@ public class Nachbarschaftsstruktur {
 		parameter = new int[2];
 		parameter[0] = deltaX;
 		parameter[1] = deltaY;
-		// deltaX und deltaY duerfen nur Werte groesser als 0 sein
+		// deltaX und deltaY duerfen nur Werte groesser als 0 annehmen
 		if(deltaX < 0 || deltaY < 0) {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Nachbarschaftsstruktur' duerfen die Parameter 'deltaX' und 'deltaY' keine "
@@ -117,21 +112,35 @@ public class Nachbarschaftsstruktur {
 	}
 	
 	/***
-	 * Gibt die Nachbarschaftsstruktur in Form eines Zweidimensionalen Arrays mit Delta Werten zurueck
-	 * @return deltas Array
+	 * Gibt die Nachbarschaftsstruktur in Form eines Zweidimensionalen Arrays mit Delta Werten fuer jeden Nachbar zurueck.
+	 * @return Zweidimensionales int-Array zur Darstellung der Deltas.
 	 */
 	public int[][] getDeltas() {
 		return deltas;
 	}
 	
+	/***
+	 * Gibt den Typ der Nachbarschaftsstruktur als String zurueck.
+	 * @return Typ der Nachbarschaftsstruktur, Sprung oder Distanz.
+	 */
 	public String getTyp() {
 		return typ;
 	}
 	
+	/***
+	 * Gibt die Parameter die bei der Eingabe entgegen genommen wurden als int-Array zurueck.
+	 * Bei Distanz ist dies nur ein int Wert, und bei Sprung sind zwei int Werte zu erwarten.
+	 * @return Parameter der Eingabe.
+	 */
 	public int[] getParameter() {
 		return parameter;
 	}
 	
+	/***
+	 * Gibt die Nachbarschaftsstruktur als String zurueck.
+	 * Dies ist in der Form DISTANZ(x) oder SPRUNG(x,y) wobei x und y die eingegebenen Parameter annehmen.
+	 * @return Nachbarschaftsstruktur als String.
+	 */
 	public String toString() {
 		if(typ.equals(DISTANZ)) {
 			return (typ + "(" + parameter[0] + ")");
