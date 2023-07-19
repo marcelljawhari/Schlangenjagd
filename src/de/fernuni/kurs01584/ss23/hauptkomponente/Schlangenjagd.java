@@ -74,16 +74,27 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		}
 	}
 	
+	/***
+	 * Startet eine Schlangensuche auf dem SchlangenjagdModell.
+	 */
 	private static void loese() {
 		SchlangenSuche schlangenSuche = new SchlangenSuche(schlangenjagdModell);
 		schlangenSuche.sucheSchlangen();
 	}
 	
+	/***
+	 * Generiert einen Dschungel auf dem SchlangenjagdModell.
+	 * @throws TimeoutException Erzeugt eine TimeoutException wenn der Generator 
+	 * 							laenger als die Zeitvorgabe vorgibt braucht
+	 */
 	private static void erzeuge() throws TimeoutException {
 		DschungelGenerator dschungelGenerator = new DschungelGenerator(schlangenjagdModell);
 		dschungelGenerator.generiereDschungel();
 	}
 	
+	/***
+	 * Pruefe die im SchlangenjagdModell gespeicherte Loesung.
+	 */
 	private static void pruefe() {
 		LoesungsPruefer loesungsPruefer = new LoesungsPruefer(schlangenjagdModell);
 		Map<Fehlertyp, Integer> fehler = loesungsPruefer.pruefe();
@@ -95,6 +106,9 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		System.out.println();
 	}
 	
+	/***
+	 * Bewerte die im SchlangenjagdModell gespeicherte Loesung.
+	 */
 	private static void bewerte() {
 		LoesungsBewerter loesungsBewerter = new LoesungsBewerter(schlangenjagdModell);
 		System.out.println("===============Bewertung================");
@@ -102,12 +116,20 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		System.out.println();
 	}
 	
+	/***
+	 * Stellt das SchlangenjagdModell in der Konsole dar.
+	 */
 	private static void darstellen() {
 		Darstellung darstellung = new Darstellung(schlangenjagdModell);
 		darstellung.print();
 		System.out.println();
 	}
 	
+	/***
+	 * Speichere das SchlangenjagdModell in einem XML File ab.
+	 * @param file Pfad der Datei die geschrieben werden soll.
+	 * @return <ttt>true</ttt> falls erfolgreich gespeichert wurde, andernfalls <ttt>false</ttt>.
+	 */
 	private static boolean schreibeSchlangenjagdModell(String file) {
 		try {
 			DateiSchreiber schreiber = new DateiSchreiber();
@@ -118,7 +140,12 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		}
 		return true;
 	}
-	
+
+	/***
+	 * Lese das SchlangenjagdModell aus einem XML File aus.
+	 * @param file Pfad der Datei die gelesen werden soll.
+	 * @return <ttt>true</ttt> falls erfolgreich gelesen wurde, andernfalls <ttt>false</ttt>.
+	 */
 	private static boolean leseSchlangenjagdModell(String file) {
 		try {
 			DateiLeser leser = new DateiLeser();
@@ -131,6 +158,11 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		return true;
 	}
 	
+	/***
+	 * Verifiziere die angegebenen Parameter des Programmaufrufs.
+	 * @param args Argumente des Programmaufrufs.
+	 * @return <ttt>true</ttt> falls die Parameter die Syntax befolgen, andernfalls <ttt>false</ttt>.
+	 */
 	private static boolean verifiziereParameter(String[] args) {
 		if(args.length > 3) {
 			System.out.println("Fehler: Zu viele Parameter angegeben, es kann maximal 'ablauf', 'eingabe' und 'ausgabe' angegeben werden.");
@@ -176,8 +208,6 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		}
 		return true;
 	}
-	
-	
 
 	@Override
 	public boolean loeseProbleminstanz(String xmlEingabeDatei, String xmlAusgabeDatei) {
@@ -229,6 +259,9 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 
 	@Override
 	public int bewerteLoesung(String xmlEingabeDatei) {
+		if(!leseSchlangenjagdModell(xmlEingabeDatei)) {
+			return 0;
+		}
 		LoesungsBewerter loesungsBewerter = new LoesungsBewerter(schlangenjagdModell);
 		return loesungsBewerter.bewerte();
 	}

@@ -2,17 +2,11 @@ package de.fernuni.kurs01584.ss23.algorithmus;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import java.util.List;
 import java.util.Map;
 
 import org.junit.jupiter.api.Test;
 
-import de.fernuni.kurs01584.ss23.dateiverarbeitung.DateiLeser;
-import de.fernuni.kurs01584.ss23.dateiverarbeitung.DocumentParser;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
-import de.fernuni.kurs01584.ss23.modell.Dschungel;
-import de.fernuni.kurs01584.ss23.modell.Schlange;
-import de.fernuni.kurs01584.ss23.modell.Schlangenart;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdFabrik;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 
