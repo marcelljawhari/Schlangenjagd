@@ -30,6 +30,10 @@ public class Feld {
 			throw new IllegalArgumentException(
 					"Fuer die Klasse 'Feld' darf das Attribut 'verwendbarkeit' keinen negativen Wert annehmen.");
 		}
+		if (zeichen.length() > 1) {
+			throw new IllegalArgumentException(
+					"Fuer die Klasse 'Feld' darf der Zeichen-String nicht mehr als ein Zeichen annehmen.");
+		}
 		this.id = id;
 		this.zeichen = zeichen;
 		this.zeile = zeile;

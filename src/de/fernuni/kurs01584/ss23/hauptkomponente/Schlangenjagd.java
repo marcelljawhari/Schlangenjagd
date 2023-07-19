@@ -1,12 +1,9 @@
 package de.fernuni.kurs01584.ss23.hauptkomponente;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.concurrent.TimeoutException;
-
-import org.jdom2.JDOMException;
 
 import de.fernuni.kurs01584.ss23.algorithmus.DschungelGenerator;
 import de.fernuni.kurs01584.ss23.algorithmus.LoesungsBewerter;
@@ -56,12 +53,8 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 					// Erzeugen
 					try {
 						erzeuge();
-					} catch (TimeoutException e) {
-						System.out.println("Fehler: Der Dschungel konnte nicht in der vorgegebenen Zeit generiert werden.");
-						return;
-					} catch (IllegalArgumentException e) {
-						System.out.println("Fehler: Im Dschungel sind nicht genug Felder vorhanden um alle Schlangenarten" 
-								+ " mit der gewuenschten Anzahl zu platzieren.");
+					} catch (Exception e) {
+						System.out.println("Fehler: " + e.getMessage());
 						return;
 					}
 					if(!schreibeSchlangenjagdModell(ausgabe)) {
@@ -119,8 +112,8 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		try {
 			DateiSchreiber schreiber = new DateiSchreiber();
 			schreiber.schreibe(schlangenjagdModell, file);
-		} catch (IOException e) {
-			System.out.println("Fehler: Konnte die Ausgabedatei an dem gegebenen Pfad '" + file + "' nicht schreiben.");
+		} catch (Exception e) {
+			System.out.println("Fehler: " + e.getMessage());
 			return false;
 		}
 		return true;
@@ -131,11 +124,8 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 			DateiLeser leser = new DateiLeser();
 			XMLParser parser = new XMLParser(leser.lese(file));
 			schlangenjagdModell = parser.parseSchlangenjagd();
-		} catch (IOException e) {
-			System.out.println("Fehler: Konnte die Eingabedatei an dem gegebenen Pfad '" + file + "' nicht öffnen.");
-			return false;
-		} catch (JDOMException e) {
-			System.out.println("Fehler: Die Eingabedatei entspricht nicht der angegebenen DTD");
+		} catch (Exception e) {
+			System.out.println("Fehler: " + e.getMessage());
 			return false;
 		}
 		return true;
@@ -211,12 +201,8 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		}
 		try {
 			erzeuge();
-		} catch (TimeoutException e) {
-			System.out.println("Fehler: Der Dschungel konnte nicht in der vorgegebenen Zeit generiert werden.");
-			return false;
-		} catch (IllegalArgumentException e) {
-			System.out.println("Fehler: Im Dschungel sind nicht genug Felder vorhanden um alle Schlangenarten" 
-					+ " mit der gewuenschten Anzahl zu platzieren.");
+		} catch (Exception e) {
+			System.out.println("Fehler: " + e.getMessage());
 			return false;
 		}
 		if(!schreibeSchlangenjagdModell(xmlEingabeDatei)) {

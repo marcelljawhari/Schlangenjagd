@@ -17,11 +17,21 @@ import de.fernuni.kurs01584.ss23.modell.Zeiteinheit;
 public class XMLParser {
 	private Document document;
 	
+	/***
+	 * Erzeuge einen neuen XMLParser.
+	 * @param document Document worauf der XMLParser operieren soll.
+	 */
 	public XMLParser(Document document) {
 		this.document = document;
 	}
 	
-	public SchlangenjagdModell parseSchlangenjagd() {
+	/***
+	 * Prueft ob es sich bei der Eingabedatei um eine Probleminstanz oder Loesung handelt. 
+	 * Parse dann dementsprechend die Eingabedatei in ein SchlangenjagdModell.
+	 * @return Ein SchlangenjagdModell welches aus der Eingabedatei erzeugt wurde.
+	 * @throws IllegalArgumentException Gibt eine eventuell angefallene IllegalArgumentException weiter.
+	 */
+	public SchlangenjagdModell parseSchlangenjagd() throws IllegalArgumentException {
 		SchlangenjagdModell schlangenjagdModell;
 		Element root = document.getRootElement();
 		Dschungel dschungel = parseDschungel();
@@ -49,14 +59,41 @@ public class XMLParser {
 		return schlangenjagdModell;
 	}
 	
+	/***
+	 * Parse die Zeitvorgabe aus der Eingabedatei mithilfe der Methode parseZeitInMs.
+	 * @return Zeitvorgabe in ms.
+	 */
 	private long parseVorgabeZeit() {
 		return parseZeitInMs("Vorgabe");
 	}
-	
+
+	/***
+	 * Parse die Abgabezeit aus der Eingabedatei mithilfe der Methode parseZeitInMs.
+	 * @return Abgabezeit in ms.
+	 */
 	private long parseAbgabeZeit() {
 		return parseZeitInMs("Abgabe");
 	}
+
+	/***
+	 * Parse Zeit des gegebenen Typs (Vorgabe oder Abgabe) aus der Eingabedatei.
+	 * @return Zeit in ms.
+	 */
+	private long parseZeitInMs(String typ) {
+		// Parse Zeit und Multiplicator (d, h, m, s, ms) aus XML
+		Element zeitNode = document.getRootElement().getChild("Zeit");
+		long multiplicator = Zeiteinheit.valueOf(zeitNode.getAttributeValue("einheit")).getMultiplicator();
+		double zeitWert = Double.parseDouble(zeitNode.getChildText(typ));
+		// Berechne daraus die Zeit in ms
+		long zeitInMs = (long)(zeitWert * multiplicator);
+		
+		return zeitInMs;
+	}
 	
+	/***
+	 * Parse den gesamten Dschungel aus der Eingabedatei.
+	 * @return Dschungel welcher aus der Eingabedatei erzeugt wurde.
+	 */
 	private Dschungel parseDschungel() {
 		// Parse Dschungelparameter (Zeichenmenge, Zeilen, Spalten) aus XML
 		Element dschungelNode = document.getRootElement().getChild("Dschungel");
@@ -70,7 +107,35 @@ public class XMLParser {
 		
 		return dschungel;
 	}
-	
+
+	/***
+	 * Parse alle Felder des Dschungels aus der Eingabedatei und schreibe sie in den Dschungel.
+	 */
+	private void parseFelder(Dschungel dschungel, List<Element> feldNodes) {
+		// Parse jedes Feld aus der XML und platziere es im Dschungel
+		for (Element feldNode : feldNodes) {
+			String zeichen = feldNode.getText();
+			String id = feldNode.getAttributeValue("id");
+			int zeile = Integer.parseInt(feldNode.getAttributeValue("zeile"));
+			int spalte = Integer.parseInt(feldNode.getAttributeValue("spalte"));
+			int punkte = Integer.parseInt(feldNode.getAttributeValue("punkte"));
+			int verwendbarkeit = Integer.parseInt(feldNode.getAttributeValue("verwendbarkeit"));
+			
+			dschungel.setFeld(id, zeichen, zeile, spalte, punkte, verwendbarkeit);
+		}
+		
+		// Wenn das feldNodes Array kleiner ist als spalten * zeilen, 
+		// dann ist die Probleminstanz unvollstaendig und fehlende Felder muessen
+		// ergänzt werden.
+		if (feldNodes.size() < (dschungel.getSpalten() * dschungel.getZeilen())) {
+			dschungel.befuelleLeereFelder();
+		}
+	}
+
+	/***
+	 * Parse alle Schlangenarten aus der Eingabedatei und fasse sie in einem Array zusammen.
+	 * @return Schlangenart-Array aus den Schlangenarten der Eingabedatei.
+	 */
 	private Schlangenart[] parseSchlangenarten() {
 		Element schlangenartenNode = document.getRootElement().getChild("Schlangenarten");
 		List<Element> schlangenartNodes = schlangenartenNode.getChildren();
@@ -97,7 +162,11 @@ public class XMLParser {
 		}
 		return schlangenarten;
 	}
-	
+
+	/***
+	 * Parse alle Schlangen aus der Eingabedatei und fasse sie in einer Liste zusammen.
+	 * @return Schlangen-Liste aus den Schlangen der Eingabedatei.
+	 */
 	private List<Schlange> parseSchlangen(Schlangenart[] schlangenarten, Dschungel dschungel) {
 		List<Schlange> schlangen = new ArrayList<Schlange>();
 		Element schlangenNode = document.getRootElement().getChild("Schlangen");
@@ -117,40 +186,6 @@ public class XMLParser {
 			}
 		}
 		return schlangen;
-	}
-	
-	private long parseZeitInMs(String typ) {
-		// Parse Zeit und Multiplicator (d, h, m, s, ms) aus XML
-		Element zeitNode = document.getRootElement().getChild("Zeit");
-		long multiplicator = Zeiteinheit.valueOf(zeitNode.getAttributeValue("einheit")).getMultiplicator();
-		double zeitWert = Double.parseDouble(zeitNode.getChildText(typ));
-		// Berechne daraus die Zeit in ms
-		long zeitInMs = (long)(zeitWert * multiplicator);
-		
-		return zeitInMs;
-	}
-	
-	private void parseFelder(Dschungel dschungel, List<Element> feldNodes) {
-		// TODO: Fehler bei Feldern mit mehr als einem Zeichen
-		
-		// Parse jedes Feld aus der XML und platziere es im Dschungel
-		for (Element feldNode : feldNodes) {
-			String zeichen = feldNode.getText();
-			String id = feldNode.getAttributeValue("id");
-			int zeile = Integer.parseInt(feldNode.getAttributeValue("zeile"));
-			int spalte = Integer.parseInt(feldNode.getAttributeValue("spalte"));
-			int punkte = Integer.parseInt(feldNode.getAttributeValue("punkte"));
-			int verwendbarkeit = Integer.parseInt(feldNode.getAttributeValue("verwendbarkeit"));
-			
-			dschungel.setFeld(id, zeichen, zeile, spalte, punkte, verwendbarkeit);
-		}
-		
-		// Wenn das feldNodes Array kleiner ist als spalten * zeilen, 
-		// dann ist die Probleminstanz unvollstaendig und fehlende Felder muessen
-		// ergänzt werden.
-		if (feldNodes.size() < (dschungel.getSpalten() * dschungel.getZeilen())) {
-			dschungel.befuelleLeereFelder();
-		}
 	}
 	
 }

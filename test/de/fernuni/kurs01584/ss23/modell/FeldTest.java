@@ -23,6 +23,13 @@ class FeldTest {
 	}
 	
 	@Test
+	void testeKonstruktorMehrZeichenSolltenExceptionAusloesen() {
+		String zeichen = "ab";
+		assertThrows(IllegalArgumentException.class, () -> new Feld("F0", zeichen, 0, 0, 0, 0),
+				"Fuer den String, der aus mehr als einem Zeichen besteht '" + zeichen + "' wird keine Ausnahme erzeugt.");
+	}
+	
+	@Test
 	void testeKonstruktorStandardFeld() {
 		String id = "F0";
 		String zeichen = "A";
