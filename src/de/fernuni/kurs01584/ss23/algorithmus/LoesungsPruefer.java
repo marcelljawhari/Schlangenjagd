@@ -14,10 +14,19 @@ import de.fernuni.kurs01584.ss23.modell.Nachbarschaftsstruktur;
 public class LoesungsPruefer {
 	private SchlangenjagdModell schlangenjagdModell;
 	
+	/***
+	 * Erzeuge einen LoesungsPruefer fuer das angegebene SchlangenjagdModell.
+	 * @param schlangenjagdModell SchlangenjagdModell welches geprueft werden soll.
+	 */
 	public LoesungsPruefer(SchlangenjagdModell schlangenjagdModell) {
 		this.schlangenjagdModell = schlangenjagdModell;
 	}
 	
+	/***
+	 * Prueft das SchlangenjagdModell auf alle 4 Fehlertypen, generiert mit den Fehlertypen
+	 * und deren Anzahl eine Map und gibt diese zurueck.
+	 * @return Map der Fehlertypen und deren Anzahl.
+	 */
 	public Map<Fehlertyp, Integer> pruefe() {
 		Map<Fehlertyp, Integer> fehler = new HashMap<Fehlertyp, Integer>();
 		fehler.put(Fehlertyp.GLIEDER, pruefeGlieder());
@@ -27,7 +36,11 @@ public class LoesungsPruefer {
 		return fehler;
 	}
 	
-	public int pruefeGlieder() {
+	/***
+	 * Zaehlt die Anzahl der Schlangen die entweder zu viele oder zu wenige Schlangenglieder haben.
+	 * @return Anzahl der Gliederfehler.
+	 */
+	private int pruefeGlieder() {
 		int fehler = 0;
 		List<Schlange> schlangen = schlangenjagdModell.getSchlangen();
 		if(schlangen != null) {
@@ -40,7 +53,11 @@ public class LoesungsPruefer {
 		return fehler;
 	}
 	
-	public int pruefeZuordnung() {
+	/***
+	 * Zaehlt alle Schlangenglieder die einem Feld mit falschen Zeichen zugeordnet sind. 
+	 * @return Anzahl der Zuordnungsfehler.
+	 */
+	private int pruefeZuordnung() {
 		int fehler = 0;
 		List<Schlange> schlangen = schlangenjagdModell.getSchlangen();
 		if(schlangen != null) {
@@ -48,10 +65,12 @@ public class LoesungsPruefer {
 				String zeichenkette = schlange.getSchlangenart().getZeichenkette();
 				List<Schlangenglied> schlangenglieder = schlange.getSchlangenglieder();
 				for(Schlangenglied schlangenglied : schlangenglieder) {
-					String schlangengliedZeichen = "" + zeichenkette.charAt(schlangenglied.getIndex());
-					String feldZeichen = schlangenglied.getFeld().getZeichen();
-					if(!schlangengliedZeichen.equals(feldZeichen)) {
-						fehler++;
+					if(schlangenglied.getIndex() + 1 < zeichenkette.length()) {
+						String schlangengliedZeichen = "" + zeichenkette.charAt(schlangenglied.getIndex());
+						String feldZeichen = schlangenglied.getFeld().getZeichen();
+						if(!schlangengliedZeichen.equals(feldZeichen)) {
+							fehler++;
+						}
 					}
 				}
 			}
@@ -59,7 +78,11 @@ public class LoesungsPruefer {
 		return fehler;
 	}
 	
-	public int pruefeVerwendung() {
+	/***
+	 * Zaehlt alle Schlangenglieder die einem Feld zugeordnet sind, welches bereits maximal belegt ist.
+	 * @return Anzahl der Verwendungsfehler.
+	 */
+	private int pruefeVerwendung() {
 		int fehler = 0;
 		int[][] verwendbarkeiten = schlangenjagdModell.getDschungel().getVerwendbarkeiten();
 		List<Schlange> schlangen = schlangenjagdModell.getSchlangen();
@@ -80,7 +103,11 @@ public class LoesungsPruefer {
 		return fehler;
 	}
 	
-	public int pruefeNachbarschaft() {
+	/***
+	 * Zaehlt alle Schlangenglieder die nicht in der Nachbarschaft ihres Vorgaengers sind.
+	 * @return Anzahl der Nachbarschaftsfehler.
+	 */
+	private int pruefeNachbarschaft() {
 		int fehler = 0;
 		List<Schlange> schlangen = schlangenjagdModell.getSchlangen();
 		if(schlangen != null) {
@@ -99,6 +126,12 @@ public class LoesungsPruefer {
 		return fehler;
 	}
 	
+	/***
+	 * Prueft ob ein Schlangenglied in der Nachbarschaft eines anderen Schlangengliedes liegt.
+	 * @param vorherigesSchlangenglied Vorheriges Schlangenglied.
+	 * @param aktuellesSchlangenglied Zu pruefendes Schlangenglied.
+	 * @return <ttt>true</ttt> wenn das Schlangenglied in der Nachbarschaft seines Vorgaengers ist, andernfalls <ttt>false</ttt>.
+	 */
 	private boolean isInNachbarschaft(Schlangenglied vorherigesSchlangenglied, Schlangenglied aktuellesSchlangenglied) {
 		Schlange schlange = vorherigesSchlangenglied.getSchlange();
 		Nachbarschaftsstruktur nachbarschaftsstruktur = schlange.getSchlangenart().getNachbarschaftsstruktur();
