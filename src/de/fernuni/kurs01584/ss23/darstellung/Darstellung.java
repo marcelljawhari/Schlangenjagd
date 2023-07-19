@@ -7,10 +7,19 @@ import de.fernuni.kurs01584.ss23.modell.*;
 public class Darstellung {
 	private SchlangenjagdModell schlangenjagdModell;
 	
+	/***
+	 * Erzeugt eine Instanz der Darstellungsklasse.
+	 * @param schlangenjagdModell SchlangenjagdModell welches dargestellt werden soll.
+	 */
 	public Darstellung (SchlangenjagdModell schlangenjagdModell) {
 		this.schlangenjagdModell = schlangenjagdModell;
 	}
 	
+	/***
+	 * Stellt die Probleminstanz plus eine eventuelle Loesung in der Konsole dar.
+	 * Zuerst die Probleminstanz, Dschungelinformationen, Dschungel, und die Schlangenarten.
+	 * Und als letztes die eventuell gefundenen Schlangen.
+	 */
 	public void print() {
 		System.out.println("=====Darstellung der Probleminstanz=====");
 		printDschungelInformationen();
@@ -19,6 +28,9 @@ public class Darstellung {
 		printLoesung();
 	}
 	
+	/***
+	 * Stellt, falls vorhanden, die gefundenen Schlangen dar. 
+	 */
 	private void printLoesung() {
 		List<Schlange> schlangen = schlangenjagdModell.getSchlangen();
 		if(schlangen != null) {
@@ -41,6 +53,12 @@ public class Darstellung {
 		}
 	}
 	
+	/***
+	 * Stellt die Position der angegebenen Schlange innerhalb des Dschungels dar, 
+	 * indem der ganze Dschungel ausgegeben wird, wobei nur die Felder der Schlange
+	 * die echten Zeichen sind, die restlichen Zeichen werden als Punkt dargestellt.
+	 * @param schlange
+	 */
 	private void printPositionImDschungel(Schlange schlange) {
 		System.out.println("Position im Dschungel:");
 		Dschungel dschungel = schlangenjagdModell.getDschungel();
@@ -58,6 +76,9 @@ public class Darstellung {
 		}
 	}
 	
+	/***
+	 * Stellt die Dschungelinformationen Zeichenmenge, Zeilen und Spalten dar.
+	 */
 	private void printDschungelInformationen() {
 		Dschungel dschungel = schlangenjagdModell.getDschungel();
 		System.out.println();
@@ -67,12 +88,19 @@ public class Darstellung {
 		System.out.println("Anzahl Spalten: " + dschungel.getSpalten());
 	}
 	
+	/***
+	 * Stellt den Dschungel dar. Dabei wird nacheinander jeweils ein Dschungel mit
+	 * den Zeichen, den Verwendbarkeiten und den Punkten ausgegeben.
+	 */
 	private void printDschungel() {
 		printZeichen();
 		printVerwendbarkeiten();
 		printPunkte();
 	}
 	
+	/***
+	 * Stellt den Dschungel mit den Zeichen der Felder dar.
+	 */
 	private void printZeichen() {
 		Dschungel dschungel = schlangenjagdModell.getDschungel();
 		System.out.println();
@@ -89,7 +117,10 @@ public class Darstellung {
 			System.out.println();
 		}
 	}
-	
+
+	/***
+	 * Stellt den Dschungel mit den Verwendbarkeiten der Felder dar.
+	 */
 	private void printVerwendbarkeiten() {
 		Dschungel dschungel = schlangenjagdModell.getDschungel();
 		System.out.println();
@@ -106,7 +137,10 @@ public class Darstellung {
 			System.out.println();
 		}
 	}
-	
+
+	/***
+	 * Stellt den Dschungel mit den Punktwerten der Felder dar.
+	 */
 	private void printPunkte() {
 		Dschungel dschungel = schlangenjagdModell.getDschungel();
 		System.out.println();
@@ -124,6 +158,9 @@ public class Darstellung {
 		}
 	}
 	
+	/***
+	 * Stellt alle Schlangenarten dar.
+	 */
 	private void printSchlangenarten() {
 		Schlangenart[] schlangenarten = schlangenjagdModell.getSchlangenarten();
 		System.out.println();
@@ -133,6 +170,10 @@ public class Darstellung {
 		}
 	}
 	
+	/***
+	 * Stellt eine Schlangenart dar, wobei ID, Zeichenkette und Nachbarschaftsstruktur ausgegeben werden.
+	 * @param schlangenart
+	 */
 	private void printSchlangenart(Schlangenart schlangenart) {
 		System.out.println("SchlangenartID: " + schlangenart.getId());
 		System.out.println("Zeichenkette: " + schlangenart.getZeichenkette());
