@@ -153,6 +153,7 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 			schlangenjagdModell = parser.parseSchlangenjagd();
 		} catch (Exception e) {
 			System.out.println("Fehler: " + e.getMessage());
+			e.printStackTrace();
 			return false;
 		}
 		return true;
@@ -218,7 +219,7 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		if(schlangenjagdModell.getSchlangen() == null) {
 			return false;
 		}
-		if(!schreibeSchlangenjagdModell(xmlEingabeDatei)) {
+		if(!schreibeSchlangenjagdModell(xmlAusgabeDatei)) {
 			return false;
 		}
 		return true;
@@ -235,7 +236,7 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 			System.out.println("Fehler: " + e.getMessage());
 			return false;
 		}
-		if(!schreibeSchlangenjagdModell(xmlEingabeDatei)) {
+		if(!schreibeSchlangenjagdModell(xmlAusgabeDatei)) {
 			return false;
 		}
 		return true;

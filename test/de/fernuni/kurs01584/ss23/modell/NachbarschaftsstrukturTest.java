@@ -113,10 +113,6 @@ class NachbarschaftsstrukturTest {
 				break;
 			}
 		}
-		for(int[] delta : nachbarschaftsstruktur.getDeltas()) {
-			System.out.print("(" + delta[0] + "," + delta[1] + ")");
-		}
-		System.out.println();
 		assertTrue(alleGefunden, () -> "Es wurden nicht alle Deltas gefunden.");
 	}
 	
