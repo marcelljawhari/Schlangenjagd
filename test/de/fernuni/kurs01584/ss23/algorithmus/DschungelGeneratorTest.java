@@ -8,7 +8,7 @@ import org.junit.jupiter.api.Test;
 
 import de.fernuni.kurs01584.ss23.darstellung.Darstellung;
 import de.fernuni.kurs01584.ss23.dateiverarbeitung.DateiLeser;
-import de.fernuni.kurs01584.ss23.dateiverarbeitung.XMLParser;
+import de.fernuni.kurs01584.ss23.dateiverarbeitung.DocumentParser;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 
 class DschungelGeneratorTest {
@@ -18,7 +18,7 @@ class DschungelGeneratorTest {
 		String file = "./res/sj_p15_probleminstanz.xml";
 		try {
 			DateiLeser leser = new DateiLeser();
-			XMLParser parser = new XMLParser(leser.lese(file));
+			DocumentParser parser = new DocumentParser(leser.lese(file));
 			SchlangenjagdModell schlangenjagdModell = parser.parseSchlangenjagd();
 			DschungelGenerator dschungelGenerator = new DschungelGenerator(schlangenjagdModell);
 			Darstellung darstellung = new Darstellung(schlangenjagdModell);

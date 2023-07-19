@@ -7,7 +7,7 @@ import java.util.List;
 import org.junit.jupiter.api.Test;
 
 import de.fernuni.kurs01584.ss23.dateiverarbeitung.DateiLeser;
-import de.fernuni.kurs01584.ss23.dateiverarbeitung.XMLParser;
+import de.fernuni.kurs01584.ss23.dateiverarbeitung.DocumentParser;
 import de.fernuni.kurs01584.ss23.modell.Dschungel;
 import de.fernuni.kurs01584.ss23.modell.Schlange;
 import de.fernuni.kurs01584.ss23.modell.Schlangenart;
@@ -21,7 +21,7 @@ class LoesungsPrueferTest {
 		int fehlerAnzahl = 2;
 		try {
 			DateiLeser leser = new DateiLeser();
-			XMLParser parser = new XMLParser(leser.lese(file));
+			DocumentParser parser = new DocumentParser(leser.lese(file));
 			Schlangenart[] schlangenarten = parser.parseSchlangenarten();
 			Dschungel dschungel = parser.parseDschungel();
 			SchlangenjagdModell schlangenjagdModell = new SchlangenjagdModell(dschungel, 
@@ -42,7 +42,7 @@ class LoesungsPrueferTest {
 		int fehlerAnzahl = 1;
 		try {
 			DateiLeser leser = new DateiLeser();
-			XMLParser parser = new XMLParser(leser.lese(file));
+			DocumentParser parser = new DocumentParser(leser.lese(file));
 			Schlangenart[] schlangenarten = parser.parseSchlangenarten();
 			Dschungel dschungel = parser.parseDschungel();
 			SchlangenjagdModell schlangenjagdModell = new SchlangenjagdModell(dschungel, 
@@ -63,7 +63,7 @@ class LoesungsPrueferTest {
 		int fehlerAnzahl = 1;
 		try {
 			DateiLeser leser = new DateiLeser();
-			XMLParser parser = new XMLParser(leser.lese(file));
+			DocumentParser parser = new DocumentParser(leser.lese(file));
 			Schlangenart[] schlangenarten = parser.parseSchlangenarten();
 			Dschungel dschungel = parser.parseDschungel();
 			SchlangenjagdModell schlangenjagdModell = new SchlangenjagdModell(dschungel, 
@@ -84,7 +84,7 @@ class LoesungsPrueferTest {
 		int fehlerAnzahl = 1;
 		try {
 			DateiLeser leser = new DateiLeser();
-			XMLParser parser = new XMLParser(leser.lese(file));
+			DocumentParser parser = new DocumentParser(leser.lese(file));
 			Schlangenart[] schlangenarten = parser.parseSchlangenarten();
 			Dschungel dschungel = parser.parseDschungel();
 			SchlangenjagdModell schlangenjagdModell = new SchlangenjagdModell(dschungel, 

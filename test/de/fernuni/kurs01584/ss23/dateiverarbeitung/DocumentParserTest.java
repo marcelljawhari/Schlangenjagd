@@ -12,7 +12,7 @@ import de.fernuni.kurs01584.ss23.modell.Schlange;
 import de.fernuni.kurs01584.ss23.modell.Schlangenart;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 
-class XMLParserTest {
+class DocumentParserTest {
 	
 	@Test
 	void testeParseVorgabeZeit() {
@@ -20,7 +20,7 @@ class XMLParserTest {
 		long vorgabeZeit = 60000;
 		try {
 			DateiLeser leser = new DateiLeser();
-			XMLParser parser = new XMLParser(leser.lese(file));
+			DocumentParser parser = new DocumentParser(leser.lese(file));
 			SchlangenjagdModell schlangenjagdModell = parser.parseSchlangenjagd();
 			assertEquals(vorgabeZeit, schlangenjagdModell.getVorgabeZeit(), () -> "Die gelesene Zeitvorgabe '" 
 			+ schlangenjagdModell.getVorgabeZeit() + "' entspricht nicht dem vorgegebenen Wert '" + vorgabeZeit + "'.");
@@ -35,7 +35,7 @@ class XMLParserTest {
 		long abgabeZeit = 1;
 		try {
 			DateiLeser leser = new DateiLeser();
-			XMLParser parser = new XMLParser(leser.lese(file));
+			DocumentParser parser = new DocumentParser(leser.lese(file));
 			SchlangenjagdModell schlangenjagdModell = parser.parseSchlangenjagd();
 			assertEquals(abgabeZeit, schlangenjagdModell.getAbgabeZeit(), () -> "Die gelesene Abgabezeit '" 
 			+ schlangenjagdModell.getAbgabeZeit() + "' entspricht nicht dem vorgegebenen Wert '" + abgabeZeit + "'.");
@@ -49,7 +49,7 @@ class XMLParserTest {
 		String file = "./res/sj_t1_probleminstanz.xml";
 		try {
 			DateiLeser leser = new DateiLeser();
-			XMLParser parser = new XMLParser(leser.lese(file));
+			DocumentParser parser = new DocumentParser(leser.lese(file));
 			SchlangenjagdModell schlangenjagdModell = parser.parseSchlangenjagd();
 			Dschungel dschungel = schlangenjagdModell.getDschungel();
 			Feld[][] felder = dschungel.getFelder();
@@ -71,7 +71,7 @@ class XMLParserTest {
 		String file = "./res/sj_t1_unvollstaendig.xml";
 		try {
 			DateiLeser leser = new DateiLeser();
-			XMLParser parser = new XMLParser(leser.lese(file));
+			DocumentParser parser = new DocumentParser(leser.lese(file));
 			SchlangenjagdModell schlangenjagdModell = parser.parseSchlangenjagd();
 			Dschungel dschungel = schlangenjagdModell.getDschungel();
 			Feld[][] felder = dschungel.getFelder();
@@ -93,7 +93,7 @@ class XMLParserTest {
 		String file = "./res/sj_t2_loesung.xml";
 		try {
 			DateiLeser leser = new DateiLeser();
-			XMLParser parser = new XMLParser(leser.lese(file));
+			DocumentParser parser = new DocumentParser(leser.lese(file));
 			SchlangenjagdModell schlangenjagdModell = parser.parseSchlangenjagd();
 			List <Schlange> schlangen = schlangenjagdModell.getSchlangen();
 			int schlangenAnzahl = 6;

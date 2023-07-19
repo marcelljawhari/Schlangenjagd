@@ -12,7 +12,7 @@ import de.fernuni.kurs01584.ss23.algorithmus.SchlangenSuche;
 import de.fernuni.kurs01584.ss23.darstellung.Darstellung;
 import de.fernuni.kurs01584.ss23.dateiverarbeitung.DateiLeser;
 import de.fernuni.kurs01584.ss23.dateiverarbeitung.DateiSchreiber;
-import de.fernuni.kurs01584.ss23.dateiverarbeitung.XMLParser;
+import de.fernuni.kurs01584.ss23.dateiverarbeitung.DocumentParser;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 
 public class Schlangenjagd implements SchlangenjagdAPI {
@@ -122,7 +122,7 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 	private static boolean leseSchlangenjagdModell(String file) {
 		try {
 			DateiLeser leser = new DateiLeser();
-			XMLParser parser = new XMLParser(leser.lese(file));
+			DocumentParser parser = new DocumentParser(leser.lese(file));
 			schlangenjagdModell = parser.parseSchlangenjagd();
 		} catch (Exception e) {
 			System.out.println("Fehler: " + e.getMessage());

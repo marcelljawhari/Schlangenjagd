@@ -14,14 +14,14 @@ import de.fernuni.kurs01584.ss23.modell.Schlangenart;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 import de.fernuni.kurs01584.ss23.modell.Zeiteinheit;
 
-public class XMLParser {
+public class DocumentParser {
 	private Document document;
 	
 	/***
 	 * Erzeuge einen neuen XMLParser.
 	 * @param document Document worauf der XMLParser operieren soll.
 	 */
-	public XMLParser(Document document) {
+	public DocumentParser(Document document) {
 		this.document = document;
 	}
 	
