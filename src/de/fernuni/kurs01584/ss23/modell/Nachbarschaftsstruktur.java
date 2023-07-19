@@ -100,13 +100,19 @@ public class Nachbarschaftsstruktur {
 			} else {
 				x = deltaX;
 			}
-			for(int z = x; z > -x; z = -z) {
+			int z = x;
+			for(int i = 0; i < 2; i++) {
 				deltas[index][0] = 0;
 				deltas[index][1] = z;
+				index++;
+				z = -z;
 			}
-			for(int z = x; z > -x; z = -z) {
+			z = x;
+			for(int i = 0; i < 2; i++) {
 				deltas[index][0] = z;
 				deltas[index][1] = 0;
+				index++;
+				z = -z;
 			}
 		}
 	}

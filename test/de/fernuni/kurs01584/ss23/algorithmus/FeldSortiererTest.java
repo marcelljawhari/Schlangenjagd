@@ -14,11 +14,11 @@ class FeldSortiererTest {
 	@Test
 	void testeSortiereByPunkte() {
 		List<Feld> felder = new ArrayList<Feld>();
-		felder.add(new Feld("A", "F0", 0, 0, 1, 1));
-		felder.add(new Feld("B", "F1", 0, 1, 8, 1));
-		felder.add(new Feld("C", "F2", 0, 2, 5, 1));
-		felder.add(new Feld("D", "F3", 0, 3, 9, 1));
-		felder.add(new Feld("E", "F4", 0, 4, 9, 1));
+		felder.add(new Feld("F0", "A", 0, 0, 1, 1));
+		felder.add(new Feld("F1", "B", 0, 1, 8, 1));
+		felder.add(new Feld("F2", "C", 0, 2, 5, 1));
+		felder.add(new Feld("F3", "D", 0, 3, 9, 1));
+		felder.add(new Feld("F4", "E", 0, 4, 9, 1));
 		
 		FeldSortierer sortierer = new FeldSortierer();
 		sortierer.sortiereByPunkte(felder);

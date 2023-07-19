@@ -98,7 +98,7 @@ class NachbarschaftsstrukturTest {
 		int x = 1;
 		int y = 0;
 		Nachbarschaftsstruktur nachbarschaftsstruktur = new Nachbarschaftsstruktur(x, y);
-		int[][] testDeltas = {{1,0},{-1,0},{0,1},{0,-1}};
+		int[][] testDeltas = {{x,y},{-x,y},{y,x},{y,-x}};
 		boolean alleGefunden = true;
 		boolean gefunden;
 		for(int[] testDelta : testDeltas) {
@@ -113,6 +113,10 @@ class NachbarschaftsstrukturTest {
 				break;
 			}
 		}
+		for(int[] delta : nachbarschaftsstruktur.getDeltas()) {
+			System.out.print("(" + delta[0] + "," + delta[1] + ")");
+		}
+		System.out.println();
 		assertTrue(alleGefunden, () -> "Es wurden nicht alle Deltas gefunden.");
 	}
 	

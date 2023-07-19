@@ -4,44 +4,31 @@ import static org.junit.jupiter.api.Assertions.*;
 
 import java.util.List;
 
+import org.jdom2.Document;
 import org.junit.jupiter.api.Test;
 
 import de.fernuni.kurs01584.ss23.darstellung.Darstellung;
 import de.fernuni.kurs01584.ss23.modell.Schlange;
+import de.fernuni.kurs01584.ss23.modell.SchlangenjagdFabrik;
 import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 import de.fernuni.kurs01584.ss23.dateiverarbeitung.DateiLeser;
 import de.fernuni.kurs01584.ss23.dateiverarbeitung.DocumentParser;
 
 class SchlangenSucheTest {
-
+	private static String zeichenmenge = "asd";
+	private static String[][] feldZeichen = { {"d", "a", "s"}, {"a", "a", "a"}, {"s", "s", "d"} };
+	private static String[] schlangenartZeichenketten = { "das", "sad" };
+	private static String[][][] schlangenKodierungen = { { {"A0"}, {"F0", "F1", "F2"} }, { {"A1"}, {"F6", "F4", "F8"} } };
+	private static long vorgabeZeit = 10000;
+	private static long abgabeZeit = 5000;
+	private static SchlangenjagdModell schlangenjagdModell = SchlangenjagdFabrik.erzeugeLoesung(zeichenmenge, feldZeichen,
+			schlangenartZeichenketten, schlangenKodierungen, vorgabeZeit, abgabeZeit);
+	
 	@Test
 	void testeSucheSchlangen() {
-		String file = "./res/sj_p15_probleminstanz.xml";
-		int schlangenAnzahl = 1;
-		try {
-			DateiLeser leser = new DateiLeser();
-			DocumentParser parser = new DocumentParser(leser.lese(file));
-			SchlangenjagdModell schlangenjagdModell = new SchlangenjagdModell(parser.parseDschungel()
-					, parser.parseSchlangenarten(), parser.parseVorgabeZeit());
-			SchlangenSuche schlangenSuche = new SchlangenSuche(schlangenjagdModell);
-			schlangenSuche.sucheSchlangen();
-			List<Schlange> schlangen = schlangenjagdModell.getSchlangen();
-			LoesungsPruefer pruefer = new LoesungsPruefer(schlangenjagdModell);
-			Darstellung darstellung = new Darstellung(schlangenjagdModell);
-			darstellung.print();
-			System.out.println("Fehler: ");
-			System.out.println("Glieder: " + pruefer.pruefeGlieder());
-			System.out.println("Verwendung: " + pruefer.pruefeVerwendung());
-			System.out.println("Nachbarschaft: " + pruefer.pruefeNachbarschaft());
-			System.out.println("Zuordnung: " + pruefer.pruefeZuordnung());
-			schlangenSuche.printLoesung();
-			assertEquals(schlangenAnzahl, schlangen.size(), 
-					() -> "Die gefundene Schlangenanzahl " + schlangen.size() + " entspricht nicht der Vorgabe "
-					+ schlangenAnzahl + ".");
-		} catch (Exception e) {
-			e.printStackTrace();
-			fail("Unerwartete Exception " + e + " wurde ausgeloest.");
-		}
+		SchlangenSuche suche = new SchlangenSuche(schlangenjagdModell);
+		suche.sucheSchlangen();
+		assertTrue(schlangenjagdModell.getSchlangen().size() >= 2, "Es wurden nicht alle Schlangen platziert.");
 	}
 
 }
