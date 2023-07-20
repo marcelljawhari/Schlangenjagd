@@ -6,7 +6,11 @@ import java.util.List;
 
 import org.junit.jupiter.api.Test;
 
+import de.fernuni.kurs01584.ss23.dateiverarbeitung.DateiLeser;
+import de.fernuni.kurs01584.ss23.dateiverarbeitung.DocumentParser;
 import de.fernuni.kurs01584.ss23.hauptkomponente.SchlangenjagdAPI.Fehlertyp;
+import de.fernuni.kurs01584.ss23.algorithmus.LoesungsBewerter;
+import de.fernuni.kurs01584.ss23.modell.SchlangenjagdModell;
 
 class SchlangenjagdTest {
 
@@ -63,5 +67,40 @@ class SchlangenjagdTest {
 		Schlangenjagd schlangenjagd = new Schlangenjagd();
 		assertEquals("marcell@bugovsky.at", schlangenjagd.getEmail(), "Es wird die falsche Email-Adresse ausgegeben.");
 	}
+	
+//	@Test
+//	void loeseAlleProbleminstanzen() {
+//		String ausgabeDatei = "./res/sj_test.xml";
+//		Schlangenjagd schlangenjagd = new Schlangenjagd();
+//		for(int p = 1; p < 16; p++) {
+//			String eingabeDatei = "./res/sj_p" + p + "_probleminstanz.xml";
+//			schlangenjagd.loeseProbleminstanz(eingabeDatei, ausgabeDatei);
+//
+//			try {
+//				DateiLeser leser = new DateiLeser();
+//				DocumentParser parser = new DocumentParser(leser.lese(ausgabeDatei));
+//				SchlangenjagdModell schlangenjagdModell = parser.parseSchlangenjagd();
+//				LoesungsBewerter bewerter = new LoesungsBewerter(schlangenjagdModell);
+//				System.out.println("Probleminstanz: p" + p);
+//				System.out.println("Punkte: " + bewerter.bewerte());
+//				System.out.println("Zeitvorgabe: " + schlangenjagdModell.getVorgabeZeit());
+//				System.out.println("Abgabezeit: " + schlangenjagdModell.getAbgabeZeit());
+//				System.out.println();
+//			} catch (Exception e) {
+//				System.out.println("Fehler: " + e.getMessage());
+//			}
+//		}
+//	}
+	
+//	@Test
+//	void bewerteAlleLoesungen() {
+//		Schlangenjagd schlangenjagd = new Schlangenjagd();
+//		for(int p = 1; p < 16; p++) {
+//			String eingabeDatei = "./res/sj_p" + p + "_loesung.xml";
+//			;
+//			System.out.println("Probleminstanz: p" + p);
+//			System.out.println("Punkte: " + schlangenjagd.bewerteLoesung(eingabeDatei));
+//		}
+//	}
 
 }

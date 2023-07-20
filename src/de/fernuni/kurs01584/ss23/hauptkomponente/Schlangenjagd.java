@@ -27,6 +27,8 @@ public class Schlangenjagd implements SchlangenjagdAPI {
 		if(!verifiziereParameter(args)) {
 			return;
 		}
+		
+		// Parameter aufslpitten
 		String ablauf = args[0].split("=")[1];
 		String eingabe = args[1].split("=")[1];
 		String ausgabe = "";
