@@ -65,7 +65,7 @@ public class LoesungsPruefer {
 				String zeichenkette = schlange.getSchlangenart().getZeichenkette();
 				List<Schlangenglied> schlangenglieder = schlange.getSchlangenglieder();
 				for(Schlangenglied schlangenglied : schlangenglieder) {
-					if(schlangenglied.getIndex() + 1 < zeichenkette.length()) {
+					if(schlangenglied.getIndex() < zeichenkette.length()) {
 						String schlangengliedZeichen = "" + zeichenkette.charAt(schlangenglied.getIndex());
 						String feldZeichen = schlangenglied.getFeld().getZeichen();
 						if(!schlangengliedZeichen.equals(feldZeichen)) {
